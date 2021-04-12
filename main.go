@@ -9,6 +9,9 @@ func main() {
 	// 初始化路由
 	r := routers.SetupRouter()
 
+	//加载静态文件夹
+	r.Static("/assets", "./static")
+
 	//加载模板文件目录
 	r.LoadHTMLGlob("views/**/*")
 

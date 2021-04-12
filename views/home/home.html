@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>雷小天社区</title>
-</head>
-<body>
-<h3>{{.title}}</h3>
-欢迎光临-{{.address}}
-</body>
-</html>
+{{ define "home.html" }}
+    {{template "header.html" .}}
+    <h3>{{.title}}</h3>
+    讨论页面-欢迎光临-{{.address}}
+    {{template "footer.html" .}}
+{{ end }}

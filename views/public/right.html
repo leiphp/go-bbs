@@ -1,0 +1,105 @@
+<div class="col2" id="col2">
+  <div class="microblog">
+    <div class="content">
+      <div class="inputbox">
+      <p class="sidebar_input_a"><input type="text" placeholder="手机号/邮箱/用户名" tabindex="1" name="username" id="sidebar_username"></p>
+      <p class="sidebar_input_b"><input type="password" tabindex="2" name="password" id="sidebar_password"></p>
+      <input type="hidden" value="" id="sidebar_is_author">
+      <input type="hidden" value="http://www.xinxbk.cn/" id="sidebar_current_url">
+      </div>
+      <div id="sidebar_login_btn" onclick='jinsom_sidebar_login();'>登录</div><span class="login_reg_center">or</span>
+      <a class="sidebar_reg_btn"  onclick="jinsom_pop_reg_style();">注册</a>
+    </div>
+  </div>
+  <div class="microblog">
+  <div class="s_percent"><h3>距离下次更新网站……</h3>
+    <div class="layui-progress" lay-showPercent="yes">
+      <div class="layui-progress-bar" lay-percent="85%"></div>
+    </div>
+  <div class="s_percent_content"></div>
+  </div>
+  </div>
+  <div class="microblog">
+  	<div class="sidebar_today_login_content">
+  		<h3>今日登录用户</h3>
+  		<div class="sidebar_today_login_list">
+  			<li class="sidebar_show_user" title="最后在线：2017-08-19 09:10:28"><a href="/author/9?info=home" target="_blank" >
+  				<img src="__HOME_STATIC__/image/23.png" class="avatar" width="57" height="57" /><p>admin</p>
+  			</a></li>
+  		</div>
+  	</div>
+  </div>
+  <div class="microblog">
+  <div class="sidebar_sign_content"><h3>签到排行榜</h3><div class="sidebar_sign_list"></div></div>
+  </div>
+<div class="microblog">
+   <div class="sidebar_new_reg_content"><h3>新注册用户</h3>
+     <div class="sidebar_new_reg_list">
+       <li class="sidebar_show_user" title="注册时间：2017-08-18 06:08:22">
+         <a href="/author/9?info=home" target="_blank" >
+           <img src="__HOME_STATIC__/image/23.png" class="avatar" width="57" height="57" /><p>admin</p>
+         </a>
+       </li>
+        <li class="sidebar_show_user" title="注册时间：2017-08-13 08:00:05">
+          <a href="/author/8?info=home" target="_blank" >
+            <img src="__HOME_STATIC__/image/89b96626ffc547d69ff7a92dd1eee93a.gif" class="avatar" width="57" height="57" /><p>好鸟</p>
+          </a>
+        </li>
+        <li class="sidebar_show_user" title="注册时间：2017-08-11 14:24:09">
+          <a href="/author/7?info=home" target="_blank" >
+            <img src="__HOME_STATIC__/image/9c35a459176347b5af54e76fdfbb3f6a.gif" class="avatar" width="57" height="57" /><p>小阿丽</p>
+          </a>
+        </li>
+        <li class="sidebar_show_user" title="注册时间：2017-08-10 17:49:35">
+          <a href="/author/6?info=home" target="_blank" >
+            <img src="__HOME_STATIC__/image/d59bfbbd5c174467b0ccc6676cd86919.gif" class="avatar" width="57" height="57" /><p>动她我废了你</p>
+          </a>
+        </li>
+        <li class="sidebar_show_user" title="注册时间：2017-08-10 02:21:49">
+          <a href="/author/5?info=home" target="_blank" >
+            <img src="__HOME_STATIC__/image/357b09ea17894bc684511865c2544ae4.gif" class="avatar" width="57" height="57" /><p>站长爸爸</p>
+          </a>
+        </li>
+        <li class="sidebar_show_user" title="注册时间：2017-08-09 17:27:24">
+          <a href="/author/4?info=home" target="_blank" >
+            <img src="__HOME_STATIC__/image/0a3f02fca7d64b788d703628c25d9c9e.gif" class="avatar" width="57" height="57" /><p>abc爱编程</p>
+          </a>
+        </li>
+        <li class="sidebar_show_user" title="注册时间：2017-08-09 16:23:00">
+          <a href="/author/1?info=home" target="_blank" >
+            <img src="__HOME_STATIC__/image/avatar_1502892918.jpg" class="avatar" width="57" height="57" /><p>Debug²º¹⁷</p>
+          </a>
+        </li>
+      </div>
+    </div>
+  </div>
+
+   <div class="microblog">
+    <div class="s_share">
+    <h3>分享网站</h3>
+      <div class="sidebar_share">
+      <a class="share_weixin" onclick='jinsom_sidebar_share_wechat("http://www.100txy.com/");'>微信</a>
+      <a href="http://connect.qq.com/widget/shareqq/index.html?title=分享一个不错的网站&summary=http://www.100txy.com&pics=http://www.xinxbk.cn/wp-content/uploads/2017/08/logo1.png&url=http://www.xinxbk.cn/" class="share_qq" target="_blank">Q Q</a>
+      <a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.100txy.com/&desc=分享一个不错的网站" class="share_qzone" target="_blank">空间</a>
+      <a href="http://service.weibo.com/share/share.php?url=http://www.100txy.com/&title=分享一个不错的网站&appkey=&searchPic=true" class="share_weibo" target="_blank">微博</a>
+      </div>
+    </div>
+  </div>
+  <div class="microblog">
+     <div class="s_donate"><h3>赞助本站</h3>
+  <div class="layui-tab">
+    <ul class="layui-tab-title">
+      <li class="layui-this">微信</li>
+      <li>支付宝</li>
+      <li>Q Q</li>
+    </ul>
+    <div class="layui-tab-content">
+      <div class="layui-tab-item layui-show"><img src="__HOME_STATIC__/image/微信.jpg"></div>
+      <div class="layui-tab-item"><img src="__HOME_STATIC__/image/支付宝.jpg"></div>
+      <div class="layui-tab-item"><img src=""></div>
+    </div>
+  <div class="s_donate_content"></div>
+  </div>
+</div>
+</div>
+</div>
