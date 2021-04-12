@@ -20,8 +20,10 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/login", login)
 		v1.GET("submit", submit)
 		v1.GET("/topgoer", helloHandler)
-		v1.GET("/test",  controllers.HomeIndex)
-		v1.GET("/discuss/index",  controllers.DiscussIndex)
+		v1.GET("/home",  controllers.HomeIndex)
+		v1.GET("/home/list",  controllers.HomeList)
+		v1.GET("/discuss",  controllers.DiscussIndex)
+		v1.GET("/discuss/list",  controllers.DiscussList)
 	}
 
 	v2 := r.Group("/v2")
@@ -30,7 +32,7 @@ func SetupRouter() *gin.Engine {
 		v2.POST("/submit", submit)
 	}
 
-	r.Run(":8000")
+	//r.Run(":8000")
 	return r
 }
 
