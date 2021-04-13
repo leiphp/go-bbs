@@ -1,0 +1,43 @@
+
+<div class="fly-panel fly-column">
+ <div class="layui-container">
+   <div class="mobile-nav layui-hide-md layui-hide-lg layui-show-xs-block">
+     <ul>
+       <li>
+         <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
+       </li>
+       <li>
+         <a href="{:url('cases/index/index')}"><i class="iconfont icon-iconmingxinganli"></i>视频</a>
+       </li>
+       <li>
+         <a href="http://www.100txy.com" target="_blank"><i class="iconfont icon-ui"></i>博客</a>
+       </li>
+     </ul>
+   </div>
+   <ul class="layui-clear" id="layui-head">
+     <!-- <li class="layui-hide-xs layui-this"><a href="/">首页</a></li> -->
+     <li><a href="/">首页</a></li>
+     <li><a href="{:url('index/quiz/index')}">提问</a></li>
+     <li><a href="{:url('index/share/index')}">分享<span class="layui-badge-dot"></span></a></li>
+     <li><a href="{:url('index/discuss/index')}">讨论</a></li>
+     <li><a href="{:url('index/suggest/index')}">建议</a></li>
+     <li><a href="{:url('index/notice/index')}">公告</a></li>
+     <li><a href="{:url('index/news/index')}">动态</a></li>
+     <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+
+     <!-- 用户登入后显示 -->
+     <!--
+     <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="user/index.html">我发表的贴</a></li>
+     <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="user/index.html#collection">我收藏的贴</a></li>
+     -->
+   </ul>
+
+   <div class="fly-column-right layui-hide-xs">
+     <span class="fly-search"><i class="layui-icon"></i></span>
+     <a href="{:url('solution/index/add')}" class="layui-btn">发表新帖</a>
+   </div>
+   <div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+     <a href="{:url('solution/index/add')}" class="layui-btn">发表新帖</a>
+   </div>
+ </div>
+</div>

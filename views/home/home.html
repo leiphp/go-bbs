@@ -1,6 +1,192 @@
 {{ define "home.html" }}
-    {{template "header.html" .}}
-    <h3>{{.title}}</h3>
-    讨论页面-欢迎光临-{{.address}}
-    {{template "footer.html" .}}
+    <!DOCTYPE html>
+    <html  lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>雷小天社区-互联网开发者综合社区论坛</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="keywords" content="开发者社区,站长社区,技术论坛,互联网综合社区">
+        <meta name="description" content="雷小天社区是面向开发者的开放型综合互联网技术平台，涉及到后台开发、移动开发、前端开发、站长技术等相关领域，关注互联网相关技术的问答、分享、讨论、建议、动态及公告等，与提问回答交流方式，共同提高自身的开发技术水平，达到通过进步的目的。">
+
+        <link rel="stylesheet" type="text/css" href="/assets/res/layui/css/layui.css" />
+        <link rel="stylesheet" type="text/css" href="/assets/res/css/global.css" />
+        <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+        <script src="/assets/js/jquery.2.1.4.min.js"></script>
+        <!-- QQ第三方登录 -->
+        <script type="text/javascript">
+            function toLogin() {
+                //以下为按钮点击事件的逻辑。注意这里要重新打开窗口
+                //否则后面跳转到QQ登录，授权页面时会直接缩小当前浏览器的窗口，而不是打开新窗口
+                var A = window.open("oauth/index.php", "TencentLogin", "width=450,height=320,menubar=0,scrollbars=1,resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+            }
+        </script>
+        <!--百度统计-->
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?cfb89adca94651ea42a9d342905b043e";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+        <!--百度统计 end-->
+    </head>
+    <body>
+        {{template "header.html" .}}
+
+        {{template "column.html" .}}
+
+        <div class="layui-container">
+            <div class="layui-row layui-col-space15">
+                <!-- 左边主体部分 -->
+                <div class="layui-col-md8">
+                    {notempty name="topdata"}
+                    <div class="fly-panel">
+                        <div class="fly-panel-title fly-filter">
+                            <a>置顶</a>
+                            <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a>
+                        </div>
+                        <ul class="fly-list">
+                            {volist name="topdata" id="v"}
+                            <li>
+                                <a href="{:url('user/index/home',array('id'=>$v.author))}" class="fly-avatar">
+                                    <img src="{$v.head_img}" alt="{$v.nickname}">
+                                </a>
+                                <h2>
+                                    <a class="layui-badge">{$v.name}</a>
+                                    <a href="{:url('solution/index/detail',array('id'=>$v.id))}">{$v.title}</a>
+                                </h2>
+                                <div class="fly-list-info">
+                                    <a href="{:url('user/index/home',array('id'=>$v.author))}" link>
+                                        <cite>{$v.nickname}</cite>
+                                        {if condition="$v.is_admin eq 1"}
+                                        <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
+                                        {/if}
+                                        {if condition="$v.is_vip neq 0"}
+                                        <i class="layui-badge fly-badge-vip">VIP{$v.is_vip}</i>
+                                        {/if}
+                                    </a>
+                                    <span>{$v.addtime}</span>
+
+                                    <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {$v.reward}</span>
+                                    {if condition="$v.solved eq 1"}
+                                    <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+                                    {/if}
+                                    <span class="fly-list-nums"><i class="iconfont icon-pinglun1" title="回答"></i> {$v.commentnum}</span>
+                                </div>
+                                <div class="fly-list-badge">
+                                    <!--
+                                       <span class="layui-badge layui-bg-black">置顶</span>
+                                       <span class="layui-badge layui-bg-red">精帖</span>
+                                       -->
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                    {/notempty}
+
+                    <div class="fly-panel" style="margin-bottom: 0;">
+
+                        <div class="fly-panel-title fly-filter">
+                            <a href="{:url('index/column/all')}" class="layui-this">综合</a>
+                            <span class="fly-mid"></span>
+                            <a href="{:url('index/column/unsolved')}">未结</a>
+                            <span class="fly-mid"></span>
+                            <a href="{:url('index/column/solved')}">已结</a>
+                            <span class="fly-mid"></span>
+                            <a href="{:url('index/column/wonderful')}">精华</a>
+                            <span class="fly-filter-right layui-hide-xs"><a href="" class="layui-this">按最新</a><span class="fly-mid"></span><a href="">按热议</a></span>
+                        </div>
+
+                        <ul class="fly-list">
+                            {volist name="data" id="v"}
+                            <li>
+                                <a href="{:url('user/index/home',array('id'=>$v.author))}" class="fly-avatar">
+                                    <img src="{$v.head_img}" alt="{$v.nickname}">
+                                </a>
+                                <h2>
+                                    <a class="layui-badge">{$v.name}</a>
+                                    <a href="{:url('solution/index/detail',array('id'=>$v.id))}">{$v.title}</a>
+                                </h2>
+                                <div class="fly-list-info">
+                                    <a href="{:url('user/index/home',array('id'=>$v.author))}" link>
+                                        <cite>{$v.nickname}</cite>
+                                        {if condition="$v.is_admin eq 1"}
+                                        <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
+                                        {/if}
+                                        {if condition="$v.is_vip neq 0"}
+                                        <i class="layui-badge fly-badge-vip">VIP{$v.is_vip}</i>
+                                        {/if}
+                                    </a>
+                                    <span>{$v.addtime}</span>
+
+                                    <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {$v.reward}</span>
+                                    {if condition="$v.solved eq 1"}
+                                    <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+                                    {/if}
+                                    <span class="fly-list-nums"><i class="iconfont icon-pinglun1" title="回答"></i> {$v.commentnum}</span>
+                                </div>
+                                <div class="fly-list-badge">
+                                    {if condition="$v.is_wonderful eq 1"}
+                                    <span class="layui-badge layui-bg-red">精帖</span>
+                                    {/if}
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+
+                        <div style="text-align: center">
+                            <div class="laypage-main">
+                                <a href="{:url('/index/column/all.html?page=2')}" class="laypage-next">更多求解</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- 左边主体部分 -->
+                {{template "right.html" .}}
+            </div>
+        </div>
+
+        {{template "footer.html" .}}
+
+        <script src="/assets/res/layui/layui.js"></script>
+        <script>
+            layui.cache.page = '';
+            layui.cache.user = {
+                username: '游客',
+                uid: -1,
+                avatar: '/assets/res/images/avatar/00.jpg',
+                experience: 83,
+                sex: '男'
+            };
+            // layui.config({
+            //  version: "3.0.0"
+            //  ,base: '__RES__/mods/' //这里实际使用时，建议改成绝对路径
+            // }).extend({
+            //  fly: 'index'
+            // }).use('fly');
+
+            layui.config({
+                version: "3.0.0",
+                base: '/assets/res/mods/'
+            }).extend({
+                fly: 'index'
+            }).use(['fly', 'face'], function() {
+                var $ = layui.$,
+                    fly = layui.fly;
+                //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
+
+                $('.detail-body').each(function() {
+                    var othis = $(this),
+                        html = othis.html();
+                    othis.html(fly.content(html));
+                });
+
+            });
+        </script>
+    </body>
+    </html>
 {{ end }}
