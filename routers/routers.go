@@ -14,16 +14,16 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	//r.LoadHTMLGlob("/views/**/*")
 	// 路由组1 ，处理GET请求
-	v1 := r.Group("/v1")
+	v1 := r.Group("/")
 	// {} 是书写规范
 	{
-		v1.GET("/login", login)
-		v1.GET("submit", submit)
-		v1.GET("/topgoer", helloHandler)
-		v1.GET("/home",  controllers.HomeIndex)
+		v1.GET("/",  controllers.HomeIndex)
 		v1.GET("/home/list",  controllers.HomeList)
 		v1.GET("/discuss",  controllers.DiscussIndex)
 		v1.GET("/discuss/list",  controllers.DiscussList)
+		v1.GET("/login", login)
+		v1.GET("submit", submit)
+		v1.GET("/topgoer", helloHandler)
 	}
 
 	v2 := r.Group("/v2")
