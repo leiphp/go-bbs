@@ -101,40 +101,40 @@
                         </div>
 
                         <ul class="fly-list">
-                            {volist name="data" id="v"}
+                            {{range $index, $v := .data }}
                             <li>
                                 <a href="{:url('user/index/home',array('id'=>$v.author))}" class="fly-avatar">
-                                    <img src="{$v.head_img}" alt="{$v.nickname}">
+                                    <img src="{{$v.HeadImg}}" alt="{{$v.Nickname}}">
                                 </a>
                                 <h2>
-                                    <a class="layui-badge">{$v.name}</a>
-                                    <a href="{:url('solution/index/detail',array('id'=>$v.id))}">{$v.title}</a>
+                                    <a class="layui-badge">{{$v.Name}}</a>
+                                    <a href="{:url('solution/index/detail',array('id'=>$v.id))}">{{$v.Title}}</a>
                                 </h2>
                                 <div class="fly-list-info">
                                     <a href="{:url('user/index/home',array('id'=>$v.author))}" link>
-                                        <cite>{$v.nickname}</cite>
-                                        {if condition="$v.is_admin eq 1"}
+                                        <cite>{{$v.Nickname}}</cite>
+                                        {{if $v.IsAdmin}}
                                         <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
-                                        {/if}
-                                        {if condition="$v.is_vip neq 0"}
-                                        <i class="layui-badge fly-badge-vip">VIP{$v.is_vip}</i>
-                                        {/if}
+                                        {{end}}
+                                        {{if $v.IsVip}}
+                                        <i class="layui-badge fly-badge-vip">VIP{{$v.IsVip}}</i>
+                                        {{end}}
                                     </a>
-                                    <span>{$v.addtime}</span>
+                                    <span>{{$v.CreatDate}}</span>
 
-                                    <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {$v.reward}</span>
-                                    {if condition="$v.solved eq 1"}
+                                    <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{$v.Reward}}</span>
+                                    {{if eq $v.Solved 1}}
                                     <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
-                                    {/if}
-                                    <span class="fly-list-nums"><i class="iconfont icon-pinglun1" title="回答"></i> {$v.commentnum}</span>
+                                    {{ end }}
+                                    <span class="fly-list-nums"><i class="iconfont icon-pinglun1" title="回答"></i> {{$v.CommentNum}}</span>
                                 </div>
                                 <div class="fly-list-badge">
-                                    {if condition="$v.is_wonderful eq 1"}
+                                    {{if eq $v.Solved 1}}
                                     <span class="layui-badge layui-bg-red">精帖</span>
-                                    {/if}
+                                    {{ end }}
                                 </div>
                             </li>
-                            {/volist}
+                            {{ end }}
                         </ul>
 
                         <div style="text-align: center">

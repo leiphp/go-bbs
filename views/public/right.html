@@ -1,25 +1,25 @@
 <div class="layui-col-md4">
   <!--谷歌广告 -->
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-hg-f+27-7p+bc" data-ad-client="ca-pub-2021373094480796" data-ad-slot="3110517025"></ins>
-  <script>
-    //  (adsbygoogle = window.adsbygoogle || []).push({});
-    $(document).ready(function() {
-      (adsbygoogle = window.adsbygoogle || []).push({})
-    })
-  </script>
+{{/*  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>*/}}
+{{/*  <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-hg-f+27-7p+bc" data-ad-client="ca-pub-2021373094480796" data-ad-slot="3110517025"></ins>*/}}
+{{/*  <script>*/}}
+{{/*    //  (adsbygoogle = window.adsbygoogle || []).push({});*/}}
+{{/*    $(document).ready(function() {*/}}
+{{/*      (adsbygoogle = window.adsbygoogle || []).push({})*/}}
+{{/*    })*/}}
+{{/*  </script>*/}}
   <!--谷歌广告 end-->
   <!--百度联盟 -->
-  <script type="text/javascript">
-    (function() {
-      var s = "_" + Math.random().toString(36).slice(2);
-      document.write('<div style="" id="' + s + '"></div>');
-      (window.slotbydup = window.slotbydup || []).push({
-        id: "u3565867",
-        container: s
-      });
-    })();
-  </script>
+{{/*  <script type="text/javascript">*/}}
+{{/*    (function() {*/}}
+{{/*      var s = "_" + Math.random().toString(36).slice(2);*/}}
+{{/*      document.write('<div style="" id="' + s + '"></div>');*/}}
+{{/*      (window.slotbydup = window.slotbydup || []).push({*/}}
+{{/*        id: "u3565867",*/}}
+{{/*        container: s*/}}
+{{/*      });*/}}
+{{/*    })();*/}}
+{{/*  </script>*/}}
   <!-- 多条广告如下脚本只需引入一次 -->
   <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer"></script>
   <!--百度联盟 end-->
@@ -70,29 +70,30 @@
     <h3 class="fly-panel-title">回贴周榜</h3>
     <dl>
       <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
-      {volist name="reply" id="v"}
+      {{range $index, $v := .reply }}
       <dd>
         <a href="{:url('user/index/home',array('id'=>$v.id))}">
-          <img src="{$v.head_img}"><cite>{$v.nickname}</cite><i>{$v.usernum}次回答</i>
+          <img src="{{$v.HeadImg}}"><cite>{{$v.Nickname}}</cite><i>{{$v.ReplyNum}}次回答</i>
         </a>
       </dd>
-      {/volist}
+      {{end}}
 
     </dl>
   </div>
 
   <dl class="fly-panel fly-list-one">
     <dt class="fly-panel-title">本周热议</dt>
-    {volist name="comment" id="v"}
-    <dd>
-      <a href="{:url('solution/index/detail',array('id'=>$v.postid))}">{$v.title}</a>
-      <span><i class="iconfont icon-pinglun1"></i> {$v.commnum}</span>
-    </dd>
-    {/volist}
+    {{if .topdata}}
+      {{range $index, $v := .comment }}
+      <dd>
+        <a href="{:url('solution/index/detail',array('id'=>$v.postid))}">{{$v.Title}}</a>
+        <span><i class="iconfont icon-pinglun1"></i> {{$v.CommentNum}}</span>
+      </dd>
+      {{end}}
 
-    {empty name="comment"}
+    {{else}}
     <div class="fly-none">没有相关数据</div>
-    {/empty}
+    {{end}}
 
   </dl>
 
