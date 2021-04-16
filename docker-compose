@@ -1,0 +1,11 @@
+version: '2.4'
+services:
+  http:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8022:8001"
+    command:
+      /go/src/projectname/projectname   //运行已经编译的文件
