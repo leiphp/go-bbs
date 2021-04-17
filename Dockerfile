@@ -21,3 +21,9 @@ COPY . .
 RUN go mod tidy
 #编译
 RUN go build
+
+#暴露端口
+EXPOSE 8001
+
+#最终运行docker的命令
+ENTRYPOINT  ["./projectname"]
