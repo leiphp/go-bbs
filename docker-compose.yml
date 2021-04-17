@@ -8,4 +8,4 @@ services:
     ports:
       - "8022:8001"
     command:
-      /go/src/projectname/projectname   //运行已经编译的文件
+      /go/src/projectname/projectname   #运行已经编译的文件
