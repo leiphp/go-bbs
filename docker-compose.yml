@@ -1,6 +1,8 @@
 version: '2.4'
 services:
   http:
+    container_name: go-bbs
+    image: go-bbs
     build:
       context: .
       dockerfile: Dockerfile
