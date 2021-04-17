@@ -26,4 +26,4 @@ RUN go build .
 EXPOSE 8001
 
 #最终运行docker的命令
-ENTRYPOINT  ["./projectname"]
+ENTRYPOINT  ["./bbs"]
