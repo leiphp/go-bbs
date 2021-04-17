@@ -20,7 +20,7 @@ COPY . .
 #安装依赖
 RUN go mod tidy
 #编译
-RUN go build
+RUN go build .
 
 #暴露端口
 EXPOSE 8001
