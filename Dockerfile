@@ -1,4 +1,7 @@
 FROM alpine:latest
+
+FROM golang
+
 RUN mkdir -p /app
 WORKDIR /app
 
