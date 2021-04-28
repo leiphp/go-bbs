@@ -6,4 +6,5 @@ EXPOSE 8001
 
 #CMD ["./bbs"]
 #最终运行docker的命令
-ENTRYPOINT  ["./bbs"]
+#ENTRYPOINT  ["./bbs"]
+CMD ["/go/src/projectname/bbs"]
