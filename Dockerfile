@@ -1,10 +1,7 @@
 FROM alpine:latest
 
-RUN mkdir -p /app
-WORKDIR /app
-
-ADD main /app/main
+WORKDIR /go/src/projectname
 
 EXPOSE 8001
 
-CMD ["./main"]
+CMD ["./bbs"]
