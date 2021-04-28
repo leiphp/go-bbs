@@ -4,4 +4,6 @@ WORKDIR /go/src/projectname
 
 EXPOSE 8001
 
-CMD ["./bbs"]
+#CMD ["./bbs"]
+#最终运行docker的命令
+ENTRYPOINT  ["./bbs"]
