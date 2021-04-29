@@ -31,6 +31,13 @@
             })();
         </script>
         <!--百度统计 end-->
+        <style>
+            /* 为了区分效果 */
+            div[carousel-item]>*{text-align: center; line-height: 280px; color: #fff;}
+            div[carousel-item]>*:nth-child(2n){background-color: #009688;}
+            div[carousel-item]>*:nth-child(2n+1){background-color: #5FB878;}
+            #test2 div[carousel-item]>*{line-height: 120px;}
+        </style>
     </head>
     <body>
         {{template "header.html" .}}
@@ -41,6 +48,17 @@
             <div class="layui-row layui-col-space15">
                 <!-- 左边主体部分 -->
                 <div class="layui-col-md8">
+                    <!--轮播图 -->
+                    <div class="layui-carousel" id="test3" lay-filter="test4" style="margin-bottom: 15px">
+                        <div carousel-item="">
+                            <div>条目1</div>
+                            <div>条目2</div>
+                            <div>条目3</div>
+                            <div>条目4</div>
+                            <div>条目5</div>
+                        </div>
+                    </div>
+
                     {{if .topdata}}
                     <div class="fly-panel">
                         <div class="fly-panel-title fly-filter">
@@ -186,6 +204,81 @@
                 });
 
             });
+
+            //轮播图start
+            layui.use(['carousel', 'form'], function(){
+                var carousel = layui.carousel
+                    ,form = layui.form;
+
+                //常规轮播
+                carousel.render({
+                    elem: '#test1'
+                    ,arrow: 'always'
+                });
+
+                //改变下时间间隔、动画类型、高度
+                carousel.render({
+                    elem: '#test2'
+                    ,interval: 1800
+                    ,anim: 'fade'
+                    ,height: '120px'
+                });
+
+                //设定各种参数
+                var ins3 = carousel.render({
+                    elem: '#test3'
+                    ,width: '100%'
+                    ,height: '300px'
+                    ,interval: 5000
+                });
+                //图片轮播
+                carousel.render({
+                    elem: '#test10'
+                    ,width: '100%'
+                    ,height: '440px'
+                    ,interval: 5000
+                });
+
+                //事件
+                carousel.on('change(test4)', function(res){
+                    console.log(res)
+                });
+
+                var $ = layui.$, active = {
+                    set: function(othis){
+                        var THIS = 'layui-bg-normal'
+                            ,key = othis.data('key')
+                            ,options = {};
+
+                        othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                        options[key] = othis.data('value');
+                        ins3.reload(options);
+                    }
+                };
+
+                //监听开关
+                form.on('switch(autoplay)', function(){
+                    ins3.reload({
+                        autoplay: this.checked
+                    });
+                });
+
+                $('.demoSet').on('keyup', function(){
+                    var value = this.value
+                        ,options = {};
+                    if(!/^\d+$/.test(value)) return;
+
+                    options[this.name] = value;
+                    ins3.reload(options);
+                });
+
+                //其它示例
+                $('.demoTest .layui-btn').on('click', function(){
+                    var othis = $(this), type = othis.data('type');
+                    active[type] ? active[type].call(this, othis) : '';
+                });
+            });
+            //轮播图end
         </script>
     </body>
     </html>
