@@ -1,7 +1,7 @@
 version: '2.4'
 services:
   http:
-    container_name: http_gobbs
+    container_name: http-gobbs
     image: go-bbs
     build:
       context: .

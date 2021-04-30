@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
       - name: registry-pull-secret
       containers:
-      - name: http_gobbs
+      - name: http-gobbs
         image: 192.168.101.208/test/go-bbs:latest
         imagePullPolicy: Always
         ports:

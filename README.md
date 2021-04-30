@@ -10,7 +10,7 @@ k8s目录配置k8s运行的文件清单
 构建镜像
 docker build -t go-bbs .  
 运行容器
-docker run  -p 8001:8001 --name http_gobbs -d go-bbs   
+docker run  -p 8001:8001 --name http-gobbs -d go-bbs   
 
 ## docker-composer部署
 采用docker-composer部署（默认Dockerfile是Dockerfile2需要把文件改过来）  
