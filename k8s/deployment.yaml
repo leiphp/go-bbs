@@ -36,11 +36,11 @@ spec:
           httpGet:
             path: /check/health
             port: 8001
-            initialDelaySeconds: 6
-            timeoutSeconds: 20
+          initialDelaySeconds: 6
+          timeoutSeconds: 20
         readinessProbe:
           httpGet:
             path: /check/health
             port: 8001
-            initialDelaySeconds: 6
-            timeoutSeconds: 20
+          initialDelaySeconds: 6
+          timeoutSeconds: 20

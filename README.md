@@ -19,8 +19,18 @@ docker-compose -f docker-compose.yml up -d
 ## k8s部署
 指定文件构建镜像  
 docker build -f  Dockerfile2 -t 192.168.101.208/test/go-bbs:latest .  
+
 登录私有镜像仓库  
 docker login 192.168.101.208  
+
 推送镜像到私有仓库   
-docker push 192.168.101.208/test/go-bbs:latest
+docker push 192.168.101.208/test/go-bbs:latest  
+
+切换到k8s目录  
+kubectl apply -f deployment.yaml  
+kubectl apply -f service.yaml  
+kubectl apply -f ingress.yaml   
+
+查看部署情况
+kubectl get pod,svc,ingress -n test -o wide 
 
