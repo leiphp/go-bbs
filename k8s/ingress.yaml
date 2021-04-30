@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: go-bbs
+  namespace: test
+spec:
+  rules:
+    - host: bbs.ctnrs.com
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: go-bbs
+            servicePort: 80
+

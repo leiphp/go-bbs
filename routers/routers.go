@@ -32,6 +32,18 @@ func SetupRouter() *gin.Engine {
 		v2.POST("/submit", submit)
 	}
 
+	v3 := r.Group("/check")
+	{
+		v3.GET("/health", func(c *gin.Context) {
+			//c.String(http.StatusOK, "hello word")
+			c.JSON(http.StatusOK, gin.H{
+				"code": 200,
+				"data": []int{},
+				"msg": "service is ok",
+			})
+		})
+	}
+
 	//r.Run(":8000")
 	return r
 }

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-bbs
+  namespace: test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      project: www
+      app: go-bbs
+  template:
+    metadata:
+      labels:
+        project: www
+        app: go-bbs
+    spec:
+      imagePullSecrets:
+      - name: registry-pull-secret
+      containers:
+      - name: http-gobbs
+        image: 192.168.101.208/test/go-bbs:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001
+          name: web
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 0.5
+            memory: 256Mi
+          limits:
+            cpu: 1
+            memory: 1Gi
+        livenessProbe:
+          httpGet:
+            path: /check/health
+            port: 8001
+            initialDelaySeconds: 6
+            timeoutSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /check/health
+            port: 8001
+            initialDelaySeconds: 6
+            timeoutSeconds: 20
