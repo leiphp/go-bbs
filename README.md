@@ -34,3 +34,6 @@ kubectl apply -f ingress.yaml
 查看部署情况
 kubectl get pod,svc,ingress -n test -o wide 
 
+在hosts文件加入解析(ip地址可以为k8s任意node节点)  
+192.168.101.101 bbs.100txy.com  
+
