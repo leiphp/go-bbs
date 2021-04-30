@@ -37,3 +37,7 @@ kubectl get pod,svc,ingress -n test -o wide
 在hosts文件加入解析(ip地址可以为k8s任意node节点)  
 192.168.101.101 bbs.100txy.com  
 
+## 问题  
+1.如果私有仓库项目为私有的时，拉取镜像失败的话  
+可以通过secret.yaml创建kubernetes.io/dockerconfigjson类型的secret
+

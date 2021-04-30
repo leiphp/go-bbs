@@ -16,7 +16,7 @@ spec:
         app: go-bbs
     spec:
       imagePullSecrets:
-      - name: registry-pull-secret
+      - name: mysecret
       containers:
       - name: http-gobbs
         image: 192.168.101.208/test/go-bbs:latest
