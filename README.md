@@ -29,6 +29,7 @@ docker push 192.168.101.208/test/go-bbs:latest
 切换到k8s目录  
 kubectl apply -f deployment.yaml  
 kubectl apply -f service.yaml  
+kubectl apply -f mandatory.yaml  (ingress控制器)  
 kubectl apply -f ingress.yaml   
 
 查看部署情况
