@@ -1,7 +1,8 @@
 package controllers
 
 import (
-	"bbs/lib"
+	"bbs/initialize"
+	"bbs/libs"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -14,6 +15,18 @@ import (
 
 //获取首页数据
 func HomeIndex(c *gin.Context){
+	type Params struct {
+		ID                int     `gorm:"primary_key" json:"id"` //
+		UserId            int64   `json:"user_id"`               //用户中心id
+		ExpertId          int64   `json:"expert_id"`             //专家id
+		TotalCommission   float64 `json:"total_commission"`      //历史佣金，总佣金
+		CurrentCommission float64 `json:"current_commission"`    //当前佣金
+	}
+	var query Params
+	query22 := &Params{ID:222}
+	initialize.IrisLog.Infof("[主页控制器-HomeIndex-http请求数据]-[%s]", libs.StructToJson(query))
+	initialize.IrisLog.Infof("[主页控制器-HomeIndex-http请求数据]-[%s]", libs.StructToJson(query22))
+
 	type post struct {
 		Id		   int
 		Author     string
@@ -100,5 +113,5 @@ func HomeCate(c *gin.Context){
 	result := make(map[int]string,0)
 	result[0] = "leixiaotain"
 	result[1] = "www.100txy.com"
-	c.JSON(http.StatusOK, lib.ReturnJson(200, "", result))
+	c.JSON(http.StatusOK, libs.ReturnJson(200, "", result))
 }

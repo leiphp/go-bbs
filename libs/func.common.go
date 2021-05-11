@@ -1,16 +1,32 @@
-package lib
+package libs
 
 import (
 	"bbs/configs"
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	mathrand "math/rand"
+	"net"
 	"net/http"
 	"strings"
 	"time"
 )
+
+
+//获得本机ip
+func ReturnCurrentIp() string {
+	var ips []string
+	addrs, _ := net.InterfaceAddrs()
+	for _, a := range addrs {
+		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() && ipnet.IP.To4() != nil {
+			ips = append(ips, ipnet.IP.String())
+		}
+	}
+	return ips[0]
+}
+
 
 /**
  * ReturnJson function
@@ -103,3 +119,10 @@ func HttpDo(method, url, parrams, contentType string) ([]byte, error) {
 	return body, nil
 }
 
+//struct转json字符串
+func StructToJson(data interface{}) string {
+
+	byteStr, _ := json.Marshal(data)
+	return string(byteStr)
+
+}

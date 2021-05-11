@@ -1,11 +1,22 @@
 package main
 
 import (
+	"bbs/configs"
+	"bbs/initialize"
 	"bbs/routers"
 	"fmt"
 )
 
 func main() {
+	//获得配置对象
+	Yaml := configs.InitConfig()
+	initialize.Init(Yaml)
+
+	//注册nacos
+	go func() {
+		initialize.InitRegisterServer()
+	}()
+
 	// 初始化路由
 	r := routers.SetupRouter()
 

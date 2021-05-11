@@ -1,0 +1,45 @@
+##Mysql配置
+Mysql:
+  Host: "192.168.101.89"
+  User: "root"
+  Password: "Mysql4321"
+  Port: "3306"
+  DataBase: "shop"
+
+##Redis集群
+RedisCluster:
+  - "192.168.101.98:2001"
+  - "192.168.101.98:2002"
+  - "192.168.101.98:2003"
+  - "192.168.101.98:2004"
+  - "192.168.101.98:2005"
+  - "192.168.101.98:2006"
+  -
+##社区-直播
+RabbitMQ:
+  Host: localhost
+  UserName: gobbs
+  PassWord: 123456
+  Port: 5672
+  SendGiftQueue: "shop_orders_queue_dev"
+  UserExpQueue: "user_exp_queue"
+  LiveSendQueue: "account-payed-send"
+  LogQueue: "shop_logs_queue_dev"
+  LiveNobleNotify: "live-noble-notify"
+
+##社区-用户中心
+RabbitMQUCenter:
+  Host: localhost
+  UserName: gobbs
+  PassWord: 123456
+  Port: 5672
+
+##Nocos
+Nacos:
+  Url:
+    - "192.168.101.140"
+    - ""
+  Port: "8848"
+  ServiceName: "go-bbs"
+
+
