@@ -7,7 +7,7 @@ import (
 
 
 /*
-	操作jmf_members表的接口定义
+	操作bbs_discuss表的接口定义
 
 	作者名称：leixiaotian 创建时间：20210412
 */

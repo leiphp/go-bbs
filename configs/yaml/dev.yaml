@@ -1,10 +1,10 @@
 ##Mysql配置
 Mysql:
-  Host: "192.168.101.89"
+  Host: "127.0.0.1"
   User: "root"
-  Password: "Mysql4321"
+  Password: "123456"
   Port: "3306"
-  DataBase: "shop"
+  DataBase: "community"
 
 ##Redis集群
 RedisCluster:
