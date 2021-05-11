@@ -21,6 +21,8 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/home/list",  controllers.HomeList)
 		v1.GET("/discuss",  controllers.DiscussIndex)
 		v1.GET("/discuss/list",  controllers.DiscussList)
+		v1.GET("/post",  controllers.PostList)
+		v1.GET("/post/:id",  controllers.PostDetail)
 		v1.GET("/login", login)
 		v1.GET("submit", submit)
 		v1.GET("/topgoer", helloHandler)
