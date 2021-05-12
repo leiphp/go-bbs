@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"bbs/services"
 	"bbs/web/controllers"
 	"fmt"
 	"net/http"
@@ -8,6 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	homeController 	*controllers.HomeController
+	postController 	*controllers.PostController
+)
 
 // SetupRouter 配置路由信息
 func SetupRouter() *gin.Engine {
@@ -15,14 +20,21 @@ func SetupRouter() *gin.Engine {
 	//r.LoadHTMLGlob("/views/**/*")
 	// 路由组1 ，处理GET请求
 	v1 := r.Group("/")
+
+	//初始化控制器结构体
+	initControllerStruct()
+	//quizService := services.NewPostService()
+	//obj := controllers.PostController{
+	//	PostService: quizService,
+	//}
 	// {} 是书写规范
 	{
-		v1.GET("/",  controllers.HomeIndex)
-		v1.GET("/home/list",  controllers.HomeList)
+		v1.GET("/",  homeController.Index)
+		v1.GET("/home/list",  homeController.List)
 		v1.GET("/discuss",  controllers.DiscussIndex)
 		v1.GET("/discuss/list",  controllers.DiscussList)
-		v1.GET("/post",  controllers.PostList)
-		v1.GET("/post/:id",  controllers.PostDetail)
+		v1.GET("/post",  postController.List)
+		v1.GET("/post/:id",  postController.Detail)
 		v1.GET("/login", login)
 		v1.GET("submit", submit)
 		v1.GET("/topgoer", helloHandler)
@@ -48,6 +60,32 @@ func SetupRouter() *gin.Engine {
 
 	//r.Run(":8000")
 	return r
+}
+
+//初始化所以控制器结构体
+func initControllerStruct() {
+	//首页控制器
+	homeController = homeObj()
+	//帖子控制器
+	postController = postObj()
+}
+
+//	首页控制器结构体
+func homeObj() *controllers.HomeController {
+	homeService := services.NewHomeService()
+	obj := controllers.HomeController{
+		HomeService: homeService,
+	}
+	return &obj
+}
+
+//	帖子控制器结构体
+func postObj() *controllers.PostController {
+	postService := services.NewPostService()
+	obj := controllers.PostController{
+		PostService: postService,
+	}
+	return &obj
 }
 
 func helloHandler(c *gin.Context) {

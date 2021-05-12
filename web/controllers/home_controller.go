@@ -3,6 +3,7 @@ package controllers
 import (
 	"bbs/initialize"
 	"bbs/libs"
+	"bbs/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -13,8 +14,13 @@ import (
 	作者名称：leixiaotian 创建时间：20210412
 */
 
+type HomeController struct {
+
+	HomeService services.HomeInterfaceService
+}
+
 //获取首页数据
-func HomeIndex(c *gin.Context){
+func (this *HomeController) Index(c *gin.Context){
 	type Params struct {
 		ID                int     `gorm:"primary_key" json:"id"` //
 		UserId            int64   `json:"user_id"`               //用户中心id
@@ -105,11 +111,11 @@ func HomeIndex(c *gin.Context){
 	})
 }
 
-func HomeList(c *gin.Context){
+func (this *HomeController) List(c *gin.Context){
 	c.HTML(http.StatusOK, "home_list.html", gin.H{"title": "首页-雷小天社区", "address": "www.100txy.com"})
 }
 
-func HomeCate(c *gin.Context){
+func (this *HomeController) Cate(c *gin.Context){
 	result := make(map[int]string,0)
 	result[0] = "leixiaotain"
 	result[1] = "www.100txy.com"

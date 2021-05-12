@@ -15,13 +15,13 @@ type PostController struct {
 }
 
 //获取帖子列表页
-func (this *PostController) PostList(c *gin.Context){
+func (this *PostController) List(c *gin.Context){
 	//c.JSON(http.StatusOK, libs.ReturnJson(200, "", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"}))
 	c.HTML(http.StatusOK, "post_list.html", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"})
 }
 
 //获取帖子详情页
-func (this *PostController) PostDetail(c *gin.Context){
+func (this *PostController) Detail(c *gin.Context){
 	idStr := c.Param("id")
 	id, _ := strconv.Atoi(idStr)
 	initialize.IrisLog.Infof("[帖子控制器-PostDetail-http请求数据]-[%d]", id)
