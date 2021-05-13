@@ -24,3 +24,10 @@ type BbsPost struct {
 func (this BbsPost) TableName() string {
 	return "cy_post"
 }
+
+//帖子评论列表参数
+type ParamsPostCommentList struct {
+	Page      	int64  `json:"page"`       //分页
+	PerPage   	int64  `json:"per_page"`   //每页显示多少条
+	PostId    	int    `json:"post_id"`    //文章ID
+}

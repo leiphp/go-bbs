@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bbs/datamodels"
 	"bbs/initialize"
 	"bbs/libs"
 	"bbs/services"
@@ -31,10 +32,16 @@ func (this *PostController) Detail(c *gin.Context){
 	if err != nil {
 		c.HTML(http.StatusNotFound, "error/404.html", gin.H{"title": "404"})
 	}
+	//获取评论
+	var query datamodels.ParamsPostCommentList
+	query.PostId = id
+	commentList, _ := this.PostService.GetPostCommentList(query)
+	initialize.IrisLog.Infof("[帖子控制器-commentList返回数据]-[%s]", libs.StructToJson(commentList))
 	c.HTML(http.StatusOK, "post/detail.html", gin.H{
 		"title": "社区讨论-雷小天社区",
 		"address": "bbs.100txy.com",
 		"id": id,
 		"data": result,
+		"comment": commentList,
 	})
 }

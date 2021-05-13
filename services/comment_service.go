@@ -1,42 +1,36 @@
 package services
 
 import (
-	"bbs/datamodels"
 	"bbs/initialize"
 	"bbs/libs"
 	"bbs/repositories"
-	"errors"
-	"math"
 	"time"
 )
 
 /*
-	提供关于讨论帖子服务
+	提供关于论坛评论服务
 
-	作者名称：leixiaotian 创建时间：20210512
+	作者名称：leixiaotian 创建时间：20210513
 */
-type PostInterfaceService interface {
-	GetPost(id int64) (interface{},error) //获取论坛帖子详情
-	GetPostCommentList(query datamodels.ParamsPostCommentList) (interface{}, error)    //获得帖子评论
+type CommentInterfaceService interface {
+	GetComment(id int64) (interface{},error) //获取所以的评论
 }
 
 //初始化对象函数
-func NewPostService() PostInterfaceService {
-	return &postService{
+func NewCommentService() CommentInterfaceService {
+	return &commentService{
 		shopMemberService:       repositories.NewBbsDiscuss(),
 		bbsPostService:          repositories.NewBbsPost(),
-		bbsCommentService:       repositories.NewBbsComment(),
 	}
 }
 
-type postService struct {
+type commentService struct {
 	shopMemberService 			repositories.BbsDiscussInterface     //商城会员服务
 	bbsPostService 			    repositories.BbsPostInterface        //社区帖子服务
-	bbsCommentService 			repositories.BbsCommentInterface        //社区评论服务
 }
 
 //获取用户钱包
-func (this *postService) GetPost(id int64) (interface{},error){
+func (this *commentService) GetComment(id int64) (interface{},error){
 
 	type BbsPostInfoVo struct {
 		ID                int64   `json:"id"` 					 //ID
@@ -84,36 +78,4 @@ func (this *postService) GetPost(id int64) (interface{},error){
 	bbsPostInfoVo.CategoryName = "提问"
 
 	return bbsPostInfoVo, nil
-}
-
-// 获得帖子评论
-func (this *postService) GetPostCommentList(query datamodels.ParamsPostCommentList) (interface{}, error) {
-
-	//如果没有分页，默认是第一页和显示20条
-	if query.Page == 0 {
-		query.Page = 1
-	}
-	if query.PerPage == 0 {
-		query.PerPage = 20
-	}
-
-	params := make(map[string]interface{})
-	params["postid"] = query.PostId
-
-	list, total, err := this.bbsCommentService.SelectPage(params, query.Page, query.PerPage)
-	if err != nil {
-		return 400600, errors.New("论坛评论服务-获取帖子评论列表失败！")
-	}
-
-	//分页返回
-	result := map[string]interface{}{
-		"count":   len(list),                                             //当前页面多少条
-		"total":   total,                                                 //记录总数
-		"pages":   math.Round(float64(total)/float64(query.PerPage)) + 1, //总共多少页
-		"page":    query.Page,                                            //当前页数
-		"perPage": query.PerPage,                                         //每页多少条
-		"rows":    list,
-	}
-
-	return result, err
 }
