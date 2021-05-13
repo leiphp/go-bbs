@@ -23,15 +23,15 @@ type PostInterfaceService interface {
 //初始化对象函数
 func NewPostService() PostInterfaceService {
 	return &postService{
-		shopMemberService:       repositories.NewBbsDiscuss(),
+		bbsUserService:          repositories.NewBbsUser(),
 		bbsPostService:          repositories.NewBbsPost(),
 		bbsCommentService:       repositories.NewBbsComment(),
 	}
 }
 
 type postService struct {
-	shopMemberService 			repositories.BbsDiscussInterface     //商城会员服务
-	bbsPostService 			    repositories.BbsPostInterface        //社区帖子服务
+	bbsUserService 			    repositories.BbsUserInterface           //社区会员服务
+	bbsPostService 			    repositories.BbsPostInterface           //社区帖子服务
 	bbsCommentService 			repositories.BbsCommentInterface        //社区评论服务
 }
 
@@ -103,6 +103,15 @@ func (this *postService) GetPostCommentList(query datamodels.ParamsPostCommentLi
 	list, total, err := this.bbsCommentService.SelectPage(params, query.Page, query.PerPage)
 	if err != nil {
 		return 400600, errors.New("论坛评论服务-获取帖子评论列表失败！")
+	}
+
+	for key,val := range list {
+		userInfo,_ :=this.bbsUserService.SelectInfo(int64(val.Ouid))
+		list[key].CreateDate = time.Unix(val.CreateTime,0).Format("2006-01-02")
+		list[key].HeadImg = userInfo.HeadImg
+		list[key].Nickname = userInfo.Nickname
+		list[key].IsAdmin = userInfo.IsAdmin
+		list[key].IsVip = userInfo.IsVip
 	}
 
 	//分页返回

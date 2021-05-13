@@ -12,6 +12,11 @@ type BbsComment struct {
 	Postid              int     `json:"postid"`                //帖子id
 	Content             string  `json:"content"`               //评论内容
 	CreateTime          int64   `json:"create_time"`           //创建时间
+	CreateDate          string  `gorm:"-" json:"create_date"`  //创建日期
+	HeadImg             string  `gorm:"-" json:"head_img"` 	   //用户头像
+	Nickname            string  `gorm:"-" json:"nickname"` 	   //昵称
+	IsAdmin             int     `gorm:"-" json:"is_admin"` 	   //是否管理员
+	IsVip               int     `gorm:"-" json:"is_vip"` 	   //是否会员
 }
 
 //返回表名

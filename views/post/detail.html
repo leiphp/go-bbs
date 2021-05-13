@@ -78,32 +78,32 @@
                 </fieldset>
 
                 <ul class="jieda" id="jieda">
-                    {neq name="countcomm" value="0"}
-                    {volist name="commentdata" id="v"}
+                    {{if .comment.rows}}
+                    {{range $index, $v := .comment.rows }}
                     <li data-id="111">
                         <a name="item-1111111111"></a>
                         <div class="detail-about detail-about-reply">
-                            <a class="fly-avatar" href="{:url('user/index/home',array('id'=>$v.ouid))}">
-                                <img src="{$v.head_img}" alt="{$v.nickname}">
+                            <a class="fly-avatar" href="user/{{$v.Ouid}}">
+                                <img src="{{$v.HeadImg}}" alt="{{$v.Nickname}}">
                             </a>
                             <div class="fly-detail-user">
                                 <a href="" class="fly-link">
-                                    <cite>{$v.nickname}</cite>
-                                    {if condition="$v.is_admin eq 1"}
+                                    <cite>{{$v.Nickname}}</cite>
+                                    {{if $v.IsAdmin}}
                                     <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
-                                    {/if}
-                                    {if condition="$v.is_vip neq 0"}
-                                    <i class="layui-badge fly-badge-vip">VIP{$v.is_vip}</i>
-                                    {/if}
+                                    {{end}}
+                                    {{if $v.IsVip}}
+                                    <i class="layui-badge fly-badge-vip">VIP{{$v.IsVip}}</i>
+                                    {{end}}
                                 </a>
                             </div>
                             <div class="detail-hits">
-                                <span>{$v.date|date='Y-m-d',###}</span>
+                                <span>{{$v.CreateDate}}</span>
                             </div>
                         </div>
-                        <div class="detail-body jieda-body photos">{$v.content}</div>
+                        <div class="detail-body jieda-body photos">{{$v.Content}}</div>
                         <div class="jieda-reply">
-                            <span class="jieda-zan" type="zan"><i class="iconfont icon-zan"></i><em>{$v.like}</em></span>
+                            <span class="jieda-zan" type="zan"><i class="iconfont icon-zan"></i><em>{{$v.Like}}</em></span>
                             <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span>
                             <div class="jieda-admin">
                                 <span type="edit">编辑</span>
@@ -112,16 +112,16 @@
                             </div>
                         </div>
                     </li>
-                    {/volist}
-                    {else/}
+                    {{end}}
+                    {{else}}
                     <li class="fly-none">消灭零回复</li>
-                    {/neq}
+                    {{end}}
                     <!-- 无数据时 -->
                     <!-- <li class="fly-none">消灭零回复</li> -->
                 </ul>
 
                 <div class="layui-form layui-form-pane">
-                    <form action="{:url('index/replayAdd')}" method="post">
+                    <form action="/comment/add" method="post">
                         <div class="layui-form-item layui-form-text">
                             <a name="comment"></a>
                             <div class="layui-input-block">
@@ -129,7 +129,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <input type="hidden" name="postid" value="{$data.id}">
+                            <input type="hidden" name="postid" value="{{.data.ID}}">
                             <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
                         </div>
                     </form>
