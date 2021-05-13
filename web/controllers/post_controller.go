@@ -35,6 +35,6 @@ func (this *PostController) Detail(c *gin.Context){
 		"title": "社区讨论-雷小天社区",
 		"address": "bbs.100txy.com",
 		"id": id,
-		"info": result,
+		"data": result,
 	})
 }

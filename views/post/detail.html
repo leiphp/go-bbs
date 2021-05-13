@@ -4,11 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <title>为什么社区越来越没落了-雷小天社区</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="开发者社区,站长社区,技术论坛,互联网综合社区">
+    <meta name="description" content="雷小天社区是面向开发者的开放型综合互联网技术平台，涉及到后台开发、移动开发、前端开发、站长技术等相关领域，关注互联网相关技术的问答、分享、讨论、建议、动态及公告等，与提问回答交流方式，共同提高自身的开发技术水平，达到通过进步的目的。">
+
+    <link rel="stylesheet" type="text/css" href="/assets/res/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/res/css/global.css" />
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <script src="/assets/js/jquery.2.1.4.min.js"></script>
 </head>
 <body>
-<h3>{{.title}}</h3>
-<p>这是第{{.id}}篇帖子</p>
-<p>帖子详情页面-欢迎光临-{{.address}}</p>
+{{template "header.html" .}}
+
+{{template "column.html" .}}
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <!-- 左边主体部分 -->
+        <div class="layui-col-md8 content detail">
+            <div class="fly-panel detail-box">
+                <h1>{{.data.Title}}</h1>
+                <div class="fly-detail-info">
+                    <!-- <span class="layui-badge">审核中</span> -->
+                    <span class="layui-badge layui-bg-green fly-detail-column">{{.data.CategoryName}}</span>
+                    {{if eq .data.Solved 1}}
+                    <span class="layui-badge" style="background-color: #5FB878;">已结</span>
+                    {{else}}
+                    <span class="layui-badge" style="background-color: #999;">未结</span>
+                    {{end}}
+                    <!-- <span class="layui-badge" style="background-color: #999;">未结</span>
+                    <span class="layui-badge" style="background-color: #5FB878;">已结</span> -->
+                    {{if eq .data.IsTop 1}}
+                    <span class="layui-badge layui-bg-black">置顶</span>
+                    {{end}}
+                    {{if eq .data.IsWonderful 1}}
+                    <span class="layui-badge layui-bg-red">精帖</span>
+                    {{end}}
+
+                    <span class="fly-list-nums">
+                        <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> {{.data.CommentCount}}</a><i class="iconfont" title="人气">&#xe60b;</i> {{.data.ViewCount}}
+                    </span>
+                </div>
+                <div class="detail-about">
+                    <a class="fly-avatar" href="/user/{{.data.ID}}">
+                        <img src="{{.data.UserInfo.HeadImg}}" alt="{{.data.UserInfo.AuthorName}}">
+                    </a>
+                    <div class="fly-detail-user">
+                        <a href="/user/{{.data.ID}}" class="fly-link">
+                            <cite>{{.data.UserInfo.AuthorName}}</cite>
+                            {{if eq .data.UserInfo.IsAdmin 1}}
+                            <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
+                            {{end}}
+                            {{if .data.UserInfo.IsVip }}
+                            <i class="layui-badge fly-badge-vip">VIP{{.data.UserInfo.IsVip}}</i>
+                            {{end}}
+                        </a>
+                        <span>{{.data.CreateDate}}</span>
+                    </div>
+                    <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
+                        <span style="padding-right: 10px; color: #FF7200">悬赏：{{.data.Reward}}飞吻</span>
+                        {{if eq .data.UserInfo.IsAdmin 1}}
+                        <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="/post/update/{{.data.ID}}">编辑此贴</a></span>
+                        {{end}}
+                        <span class="layui-btn layui-btn-xs jie-admin" type="collect" data-type="add">收藏</span>
+                    </div>
+                </div>
+                <div class="detail-body layui-text photos">{{.data.Content}}</div>
+            </div>
+
+            <div class="fly-panel detail-box" id="flyReply">
+                <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+                    <legend>回帖</legend>
+                </fieldset>
+
+                <ul class="jieda" id="jieda">
+                    {neq name="countcomm" value="0"}
+                    {volist name="commentdata" id="v"}
+                    <li data-id="111">
+                        <a name="item-1111111111"></a>
+                        <div class="detail-about detail-about-reply">
+                            <a class="fly-avatar" href="{:url('user/index/home',array('id'=>$v.ouid))}">
+                                <img src="{$v.head_img}" alt="{$v.nickname}">
+                            </a>
+                            <div class="fly-detail-user">
+                                <a href="" class="fly-link">
+                                    <cite>{$v.nickname}</cite>
+                                    {if condition="$v.is_admin eq 1"}
+                                    <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
+                                    {/if}
+                                    {if condition="$v.is_vip neq 0"}
+                                    <i class="layui-badge fly-badge-vip">VIP{$v.is_vip}</i>
+                                    {/if}
+                                </a>
+                            </div>
+                            <div class="detail-hits">
+                                <span>{$v.date|date='Y-m-d',###}</span>
+                            </div>
+                        </div>
+                        <div class="detail-body jieda-body photos">{$v.content}</div>
+                        <div class="jieda-reply">
+                            <span class="jieda-zan" type="zan"><i class="iconfont icon-zan"></i><em>{$v.like}</em></span>
+                            <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span>
+                            <div class="jieda-admin">
+                                <span type="edit">编辑</span>
+                                <span type="del">删除</span>
+                                <span class="jieda-accept" type="accept">采纳</span>
+                            </div>
+                        </div>
+                    </li>
+                    {/volist}
+                    {else/}
+                    <li class="fly-none">消灭零回复</li>
+                    {/neq}
+                    <!-- 无数据时 -->
+                    <!-- <li class="fly-none">消灭零回复</li> -->
+                </ul>
+
+                <div class="layui-form layui-form-pane">
+                    <form action="{:url('index/replayAdd')}" method="post">
+                        <div class="layui-form-item layui-form-text">
+                            <a name="comment"></a>
+                            <div class="layui-input-block">
+                                <textarea id="L_content" name="content" required lay-verify="required" placeholder="请输入内容"  class="layui-textarea fly-editor" style="height: 150px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <input type="hidden" name="postid" value="{$data.id}">
+                            <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        {{template "right.html" .}}
+    </div>
+</div>
+
 </body>
 </html>
 {{ end }}
