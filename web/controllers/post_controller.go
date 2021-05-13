@@ -17,7 +17,7 @@ type PostController struct {
 //获取帖子列表页
 func (this *PostController) List(c *gin.Context){
 	//c.JSON(http.StatusOK, libs.ReturnJson(200, "", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"}))
-	c.HTML(http.StatusOK, "post_list.html", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"})
+	c.HTML(http.StatusOK, "post/list.html", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"})
 }
 
 //获取帖子详情页
@@ -29,9 +29,9 @@ func (this *PostController) Detail(c *gin.Context){
 	result, err := this.PostService.GetPost(int64(id))
 	initialize.IrisLog.Infof("[帖子控制器-PostDetail-post返回数据]-[%s]", libs.StructToJson(result))
 	if err != nil {
-		c.HTML(http.StatusNotFound, "user/404.html", gin.H{"title": "404"})
+		c.HTML(http.StatusNotFound, "error/404.html", gin.H{"title": "404"})
 	}
-	c.HTML(http.StatusOK, "post_detail.html", gin.H{
+	c.HTML(http.StatusOK, "post/detail.html", gin.H{
 		"title": "社区讨论-雷小天社区",
 		"address": "bbs.100txy.com",
 		"id": id,

@@ -102,7 +102,7 @@ func (this *HomeController) Index(c *gin.Context){
 	comment5 := &comment{Id: 5,Title: "PHP连接MySQL数据库的三种方式(mysql、mysqli、pdo)", CommentNum: 6}
 	comment6 := &comment{Id: 4, Title: " 微信小程序文字超出限制如何在末尾加省略号", CommentNum: 2}
 
-	c.HTML(http.StatusOK, "home.html", gin.H{
+	c.HTML(http.StatusOK, "home/index.html", gin.H{
 		"title": "首页-雷小天社区",
 		"topdata": [3]*post{post1, post2, post3},
 		"data": []*post{data1, data2, data3, data4, data5, data6},
@@ -112,7 +112,7 @@ func (this *HomeController) Index(c *gin.Context){
 }
 
 func (this *HomeController) List(c *gin.Context){
-	c.HTML(http.StatusOK, "home_list.html", gin.H{"title": "首页-雷小天社区", "address": "www.100txy.com"})
+	c.HTML(http.StatusOK, "home/list.html", gin.H{"title": "首页-雷小天社区", "address": "www.100txy.com"})
 }
 
 func (this *HomeController) Cate(c *gin.Context){
