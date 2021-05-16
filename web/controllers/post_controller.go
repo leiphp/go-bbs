@@ -31,6 +31,7 @@ func (this *PostController) Detail(c *gin.Context){
 	initialize.IrisLog.Infof("[帖子控制器-PostDetail-post返回数据]-[%s]", libs.StructToJson(result))
 	if err != nil {
 		c.HTML(http.StatusNotFound, "error/404.html", gin.H{"title": "404"})
+		return
 	}
 	//获取评论
 	var query datamodels.ParamsPostCommentList

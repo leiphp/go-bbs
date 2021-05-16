@@ -3,6 +3,8 @@ package repositories
 import (
 	"bbs/datamodels"
 	"bbs/initialize"
+	"github.com/go-redis/redis/v7"
+	"strconv"
 )
 
 
@@ -14,6 +16,7 @@ import (
 
 type BbsPostInterface interface {
 	SelectInfo(id int64) (datamodels.BbsPost, error) //获得帖子信息
+	SelectTopList() ([]datamodels.BbsPost, error) //获得置顶帖子信息
 }
 
 //返回结构体对象
@@ -35,9 +38,65 @@ func (this *bbsPost) SelectInfo(id int64) (datamodels.BbsPost, error) {
 
 	//读取数据库
 	if err := initialize.MsqlDb.Where("id = ? ", id).Find(&bbsPostInfo).Error; err != nil {
-		initialize.IrisLog.Errorf("[获取主播信息失败]-[%s]", err.Error())
+		initialize.IrisLog.Errorf("[帖子仓库-获取帖子信息失败]-[%s]", err.Error())
 		return bbsPostInfo, err
 	}
 
 	return bbsPostInfo, nil
+}
+
+//获得置顶帖子信息
+func (this *bbsPost) SelectTopList() ([]datamodels.BbsPost, error) {
+	type Top struct {
+		Id  		int64 `json:"id"`
+		CreateTime  int64 `json:"create_time"`
+	}
+	postTops := []Top{}
+	var top Top
+	var bbsPostInfo datamodels.BbsPost
+	postList := []datamodels.BbsPost{}
+	//redis礼物key
+	giftKey := ReturnRedisKey(API_CACHE_POST_TOP_LIST, nil)
+	initialize.IrisLog.Infof("[帖子仓库-获取redis置顶key]-[%s]", giftKey)
+	list, err := initialize.RedisCluster.ZRevRange(giftKey, 0, 100).Result()
+	initialize.IrisLog.Infof("[帖子仓库-获取redis置顶list]-[%s]", list)
+	if err != nil {
+		initialize.IrisLog.Errorf("[帖子仓库-获取redis帖子置顶列表失败]-[%s]", err.Error())
+		return postList, err
+	}
+
+	//缓存数据为空
+	if len(list) == 0 {
+		//读取数据库
+		if err := initialize.MsqlDb.Model(&bbsPostInfo).Where("is_top = ? ", 1).Find(&postList).Error; err != nil {
+			initialize.IrisLog.Errorf("[帖子仓库-查询置顶帖子失败-%s]", err.Error())
+			return postList, err
+		}
+
+		for _, val := range postList {
+			top.Id = val.ID
+			top.CreateTime = val.CreateTime
+			postTops = append(postTops, top) //TODO 可省略
+			initialize.RedisCluster.ZAdd(ReturnRedisKey(API_CACHE_POST_TOP_LIST, nil), &redis.Z{Score: float64(val.CreateTime), Member: val.ID})
+		}
+
+		//initialize.IrisLog.Infof("[帖子仓库-postTops]-[%s]", postTops)
+		//设置redis缓存
+		//jsonData, _ := json.Marshal(postTops)
+		//initialize.IrisLog.Infof("[帖子仓库-jsonData]-[%s]", jsonData)
+		//if err := initialize.RedisCluster.Set(ReturnRedisKey(API_CACHE_POST_TOP_LIST, nil), jsonData, 0).Err(); err != nil {
+		//	initialize.IrisLog.Errorf("[帖子仓库-设置商城用户redis失败-%s]", err.Error())
+		//	return postList, err
+		//}
+	}else {
+		//val是礼物id
+		for _, val := range list {
+			postId, _ := strconv.ParseInt(val, 10, 64)
+			postInfo, _ := this.SelectInfo(postId)
+			//帖子加入列表
+			postList = append(postList, postInfo)
+		}
+	}
+
+	return postList, nil
 }

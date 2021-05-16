@@ -65,6 +65,7 @@ func (this *postService) GetPost(id int64) (interface{},error){
 	postInfo, err := this.bbsPostService.SelectInfo(id)
 	initialize.IrisLog.Infof("[帖子服务-postInfo数据]-[%s]", libs.StructToJson(postInfo))
 	if err != nil {
+		initialize.IrisLog.Errorf("[帖子服务-获取帖子信息失败]-[%s]", err.Error())
 		return 3006, err
 	}
 	bbsPostInfoVo.ID = postInfo.ID

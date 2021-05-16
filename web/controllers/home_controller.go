@@ -62,12 +62,18 @@ func (this *HomeController) Index(c *gin.Context){
 		CommentNum   int
 	}
 
-	post1 := &post{Id: 1, Author: "雷小天", HeadImg: "http://thirdqq.qlogo.cn/g?b=oidb&k=7iaib304zfK77M2ibtukgic1kQ&s=100&t=1585567893",
-		Nickname: "雷小天", Name: "提问", Title: "Vue 项目中如何去除url中的#k8s部署", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2020-01-19", Reward: 20, Solved: 1, CommentNum: 2}
-	post2 := &post{Id: 2, Author: "呵呵", HeadImg: "http://qzapp.qlogo.cn/qzapp/101370818/D770E84703CDF381F35C49D660A6CC39/100",
-		Nickname: "呵呵", Name: "讨论", Title: "组装电脑，主板用哪个的兼容好点，不考虑什么超频k8s", IsAdmin: 0, IsVip:0, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 1}
-	post3 := &post{Id: 3, Author: "Aries", HeadImg: "http://qzapp.qlogo.cn/qzapp/101370818/7FF8706F8DDBEB51F548C4C6CB28509B/100",
-		Nickname: "Aries", Name: "提问", Title: "什么是同步和异步，阻塞和非阻塞", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 3}
+	topData, err := this.HomeService.GetTopList()
+	initialize.IrisLog.Infof("[主页控制器-HomeIndex-获取置顶帖子数据]-[%s]", libs.StructToJson(topData))
+	if err != nil {
+		c.HTML(http.StatusNotFound, "error/404.html", gin.H{"title": "404"})
+	}
+
+	//post1 := &post{Id: 1, Author: "雷小天", HeadImg: "http://thirdqq.qlogo.cn/g?b=oidb&k=7iaib304zfK77M2ibtukgic1kQ&s=100&t=1585567893",
+	//	Nickname: "雷小天", Name: "提问", Title: "Vue 项目中如何去除url中的#k8s部署", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2020-01-19", Reward: 20, Solved: 1, CommentNum: 2}
+	//post2 := &post{Id: 2, Author: "呵呵", HeadImg: "http://qzapp.qlogo.cn/qzapp/101370818/D770E84703CDF381F35C49D660A6CC39/100",
+	//	Nickname: "呵呵", Name: "讨论", Title: "组装电脑，主板用哪个的兼容好点，不考虑什么超频k8s", IsAdmin: 0, IsVip:0, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 1}
+	//post3 := &post{Id: 3, Author: "Aries", HeadImg: "http://qzapp.qlogo.cn/qzapp/101370818/7FF8706F8DDBEB51F548C4C6CB28509B/100",
+	//	Nickname: "Aries", Name: "提问", Title: "什么是同步和异步，阻塞和非阻塞", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 3}
 
 	data1 := &post{Id: 1, Author: "雷小天", HeadImg: "http://thirdqq.qlogo.cn/g?b=oidb&k=7iaib304zfK77M2ibtukgic1kQ&s=100&t=1585567893",
 		Nickname: "雷小天", Name: "提问", Title: "什么是同步和异步，阻塞和非阻塞", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2020-01-19", Reward: 20, Solved: 1, CommentNum: 2}
@@ -104,7 +110,7 @@ func (this *HomeController) Index(c *gin.Context){
 
 	c.HTML(http.StatusOK, "home/index.html", gin.H{
 		"title": "首页-雷小天社区",
-		"topdata": [3]*post{post1, post2, post3},
+		"topdata": topData,
 		"data": []*post{data1, data2, data3, data4, data5, data6},
 		"reply": []*reply{reply1, reply2, reply3, reply4, reply5, reply6, reply7, reply8, reply9, reply10, reply11, reply12},
 		"comment": []*comment{comment1, comment2, comment3, comment4, comment5, comment6},
