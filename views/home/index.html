@@ -154,13 +154,13 @@
                             </li>
                             {{ end }}
                         </ul>
-
+                    {{if gt .data.total .data.perPage}}
                         <div style="text-align: center">
                             <div class="laypage-main">
                                 <a href="{:url('/index/column/all.html?page=2')}" class="laypage-next">更多求解</a>
                             </div>
                         </div>
-
+                    {{ end }}
                     </div>
                 </div>
                 <!-- 左边主体部分 -->
