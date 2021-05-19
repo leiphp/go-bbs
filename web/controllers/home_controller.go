@@ -29,9 +29,9 @@ func (this *HomeController) Index(c *gin.Context){
 		TotalCommission   float64 `json:"total_commission"`      //历史佣金，总佣金
 		CurrentCommission float64 `json:"current_commission"`    //当前佣金
 	}
-	var query Params
+	var query1 Params
 	query22 := &Params{ID:222}
-	initialize.IrisLog.Infof("[主页控制器-HomeIndex-http请求数据]-[%s]", libs.StructToJson(query))
+	initialize.IrisLog.Infof("[主页控制器-HomeIndex-http请求数据]-[%s]", libs.StructToJson(query1))
 	initialize.IrisLog.Infof("[主页控制器-HomeIndex-http请求数据]-[%s]", libs.StructToJson(query22))
 
 	type post struct {
@@ -71,22 +71,10 @@ func (this *HomeController) Index(c *gin.Context){
 	}
 
 	//分页列表
-	var params datamodels.PostPageListQuery
-	postList, err := this.HomeService.GetPostList(params)
+	var postQuery datamodels.PostPageListQuery
+	postList, err := this.HomeService.GetPostList(postQuery)
+	initialize.IrisLog.Infof("[主页控制器-HomeIndex-获取params]-[%s]", libs.StructToJson(postQuery))
 	initialize.IrisLog.Infof("[主页控制器-HomeIndex-获取postList数据]-[%s]", libs.StructToJson(postList))
-	//
-	//data1 := &post{Id: 1, Author: "雷小天", HeadImg: "http://thirdqq.qlogo.cn/g?b=oidb&k=7iaib304zfK77M2ibtukgic1kQ&s=100&t=1585567893",
-	//	Nickname: "雷小天", Name: "提问", Title: "什么是同步和异步，阻塞和非阻塞", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2020-01-19", Reward: 20, Solved: 1, CommentNum: 2}
-	//data2 := &post{Id: 2, Author: "呵呵", HeadImg: "http://qzapp.qlogo.cn/qzapp/101370818/D770E84703CDF381F35C49D660A6CC39/100",
-	//	Nickname: "呵呵", Name: "讨论", Title: "linux下开启、关闭、重启mysql服务", IsAdmin: 0, IsVip:0, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 1}
-	//data3 := &post{Id: 3, Author: "Aries", HeadImg: "http://qzapp.qlogo.cn/qzapp/101370818/7FF8706F8DDBEB51F548C4C6CB28509B/100",
-	//	Nickname: "Aries", Name: "提问", Title: "Linux关闭防火墙命令", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 3}
-	//data4 := &post{Id: 1, Author: "雷小天", HeadImg: "http://thirdqq.qlogo.cn/g?b=oidb&k=7iaib304zfK77M2ibtukgic1kQ&s=100&t=1585567893",
-	//	Nickname: "雷小天", Name: "提问", Title: "Centos7.6源码安装PHP7.4.3", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2020-01-19", Reward: 20, Solved: 1, CommentNum: 2}
-	//data5 := &post{Id: 2, Author: "呵呵", HeadImg: "http://qzapp.qlogo.cn/qzapp/101370818/D770E84703CDF381F35C49D660A6CC39/100",
-	//	Nickname: "呵呵", Name: "讨论", Title: "MySQL主从复制的原理解析", IsAdmin: 0, IsVip:0, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 1}
-	//data6 := &post{Id: 3, Author: "雷小天", HeadImg: "http://thirdqq.qlogo.cn/g?b=oidb&k=7iaib304zfK77M2ibtukgic1kQ&s=100&t=1585567893",
-	//	Nickname: "雷小天", Name: "分享", Title: "PHP连接MySQL数据库的三种方式(mysql、mysqli、pdo)", IsAdmin: 0, IsVip:3, CreatTime: 1618328126, CreatDate: "2018-03-02", Reward: 20, Solved: 1, CommentNum: 3}
 
 	reply1 := &reply{Id: 1, HeadImg: "http://thirdqq.qlogo.cn/g?b=oidb&k=7iaib304zfK77M2ibtukgic1kQ&s=100&t=1585567893", Nickname: "雷小天", ReplyNum: 32}
 	reply2 := &reply{Id: 2, HeadImg: "http://tvax2.sinaimg.cn/crop.28.0.300.300.50/90af5a89ly8fi45eieuewj20b408cdg2.jpg", Nickname: "雷小天_", ReplyNum: 12}
