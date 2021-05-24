@@ -33,7 +33,7 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/home/list",  homeController.List)
 		v1.GET("/discuss",  controllers.DiscussIndex)
 		v1.GET("/discuss/list",  controllers.DiscussList)
-		v1.GET("/post",  postController.List)
+		v1.GET("/post/list/:cate",  postController.List)
 		v1.GET("/post/:id",  postController.Detail)
 		v1.GET("/login", login)
 		v1.GET("submit", submit)

@@ -13,7 +13,7 @@ import (
 */
 
 type BbsUserInterface interface {
-	SelectInfo(id int64) (datamodels.BbsUser, error) //获得用户信息
+	SelectInfo(id int64) (datamodels.BbsUser, error) //获得用户信息0
 }
 
 //返回结构体对象

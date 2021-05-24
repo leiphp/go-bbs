@@ -5,6 +5,7 @@ import (
 	"bbs/initialize"
 	"bbs/libs"
 	"bbs/services"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -17,8 +18,30 @@ type PostController struct {
 
 //获取帖子列表页
 func (this *PostController) List(c *gin.Context){
+	cate := c.Param("cate")
+	page := c.DefaultQuery("page", "1")
+	fmt.Println("cate",cate)
+	fmt.Println("page",page)
+	category := map[string]int{
+		"all":   0,  //全部
+		"quiz":  1,	 //提问
+		"share": 2,	 //分享
+	}
+	var params datamodels.PostPageListQuery
+	params.Page,_ = strconv.ParseInt(page, 10, 64)
+	if cate != "all" {
+		changeCate := category[cate]
+		params.CategoryId = &changeCate
+	}
+	postList, _ := this.PostService.GetPostPageList(params)
+	initialize.IrisLog.Infof("[主页控制器-HomeIndex-获取postList数据]-[%s]", libs.StructToJson(postList))
+
+	c.HTML(http.StatusOK, "post/list.html", gin.H{
+		"title": "综合栏目-雷小天社区",
+		"data": postList,
+	})
 	//c.JSON(http.StatusOK, libs.ReturnJson(200, "", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"}))
-	c.HTML(http.StatusOK, "post/list.html", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"})
+	//c.HTML(http.StatusOK, "post/list.html", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"})
 }
 
 //获取帖子详情页
