@@ -29,16 +29,19 @@ func (this *PostController) List(c *gin.Context){
 	}
 	var params datamodels.PostPageListQuery
 	params.Page,_ = strconv.ParseInt(page, 10, 64)
+	params.PerPage = 20
 	if cate != "all" {
 		changeCate := category[cate]
 		params.CategoryId = &changeCate
 	}
 	postList, _ := this.PostService.GetPostPageList(params)
 	initialize.IrisLog.Infof("[主页控制器-HomeIndex-获取postList数据]-[%s]", libs.StructToJson(postList))
-
+	total := postList.(map[string]interface{})["total"] //map断言后再从map取值
+	fmt.Println("total is:",total)
 	c.HTML(http.StatusOK, "post/list.html", gin.H{
 		"title": "综合栏目-雷小天社区",
 		"data": postList,
+		"paging": libs.CreatePaging(params.Page, params.PerPage, int64(total.(int))),
 	})
 	//c.JSON(http.StatusOK, libs.ReturnJson(200, "", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"}))
 	//c.HTML(http.StatusOK, "post/list.html", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"})
