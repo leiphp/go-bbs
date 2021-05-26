@@ -39,29 +39,29 @@ type postService struct {
 //获取用户钱包
 func (this *postService) GetPost(id int64) (interface{},error){
 
-	type BbsPostInfoVo struct {
-		ID                int64   `json:"id"` 					 //ID
-		Title          	  string  `json:"title"`            	 //标题
-		Author            int     `json:"author"`                //作者ID
-		Content           string  `json:"content"`               //内容
-		Reward            int     `json:"reward"`                //奖励
-		IsWonderful       int     `json:"is_wonderful"`          //是否精帖
-		IsTop   	      int     `json:"is_top"`                //是否置顶
-		Solved            int     `json:"solved"`                //是否解决
-		ViewCount         int     `json:"view_count"`            //浏览量
-		CommentCount      int     `json:"comment_count"`         //评论量
-		CreateTime        int     `json:"create_time"`        //创建时间
-		CreateDate        string  `json:"create_date"`        //创建日期
-		CategoryId        int     `json:"category_id"`           //分类ID
-		CategoryName      string  `json:"category_name"`         //分类名称
-		UserInfo		  struct{
-			AuthorName        string  `json:"author_name"`           //作者昵称
-			HeadImg           string  `json:"head_img"`              //作者头像
-			IsVip     		  int     `json:"is_vip"`                //是否VIP
-			IsAdmin     	  int     `json:"is_admin"`              //是否管理员
-		} `json:"user_info,omitempty"` //用户详情
-	}
-	var bbsPostInfoVo BbsPostInfoVo
+	//type BbsPostInfoVo struct {
+	//	ID                int64   `json:"id"` 					 //ID
+	//	Title          	  string  `json:"title"`            	 //标题
+	//	Author            int     `json:"author"`                //作者ID
+	//	Content           string  `json:"content"`               //内容
+	//	Reward            int     `json:"reward"`                //奖励
+	//	IsWonderful       int     `json:"is_wonderful"`          //是否精帖
+	//	IsTop   	      int     `json:"is_top"`                //是否置顶
+	//	Solved            int     `json:"solved"`                //是否解决
+	//	ViewCount         int     `json:"view_count"`            //浏览量
+	//	CommentCount      int     `json:"comment_count"`         //评论量
+	//	CreateTime        int     `json:"create_time"`        //创建时间
+	//	CreateDate        string  `json:"create_date"`        //创建日期
+	//	CategoryId        int     `json:"category_id"`           //分类ID
+	//	CategoryName      string  `json:"category_name"`         //分类名称
+	//	UserInfo		  struct{
+	//		AuthorName        string  `json:"author_name"`           //作者昵称
+	//		HeadImg           string  `json:"head_img"`              //作者头像
+	//		IsVip     		  int     `json:"is_vip"`                //是否VIP
+	//		IsAdmin     	  int     `json:"is_admin"`              //是否管理员
+	//	} `json:"user_info,omitempty"` //用户详情
+	//}
+	var bbsPostInfoVo datamodels.BbsPostInfoVo
 
 	postInfo, err := this.bbsPostService.SelectInfo(id)
 	initialize.IrisLog.Infof("[帖子服务-postInfo数据]-[%s]", libs.StructToJson(postInfo))

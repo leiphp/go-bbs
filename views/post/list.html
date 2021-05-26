@@ -71,13 +71,13 @@
                 <div class="fly-panel" style="margin-bottom: 0;">
 
                     <div class="fly-panel-title fly-filter">
-                        <a href="{:url('index/column/all')}" class="layui-this">综合</a>
+                        <a href="/post/list/{{.category}}?page=1">综合</a>
                         <span class="fly-mid"></span>
-                        <a href="{:url('index/column/unsolved')}">未结</a>
+                        <a href="/post/list/{{.category}}?page=1&status=1">未结</a>
                         <span class="fly-mid"></span>
-                        <a href="{:url('index/column/solved')}">已结</a>
+                        <a href="/post/list/{{.category}}?page=1&status=2">已结</a>
                         <span class="fly-mid"></span>
-                        <a href="{:url('index/column/wonderful')}">精华</a>
+                        <a href="/post/list/{{.category}}?page=1&status=3">精华</a>
                         <span class="fly-filter-right layui-hide-xs"><a href="" class="layui-this">按最新</a><span class="fly-mid"></span><a href="">按热议</a></span>
                     </div>
 
@@ -118,6 +118,7 @@
                         {{ end }}
                     </ul>
 
+                    {{if .data.count}}
                     <div style="text-align: center">
                         <div class="laypage-main">
                             {{/* <a href="{:url('/index/column/all.html?page=2')}" class="laypage-next">更多求解</a>*/}}
@@ -132,6 +133,7 @@
                             <a href="?page={{.paging.PageCount}}&pageSize={{$.paging.Pagesize}}">»</a>
                         </div>
                     </div>
+                    {{ end }}
 
                 </div>
             </div>
@@ -142,4 +144,11 @@
 
     </body>
     </html>
+
+    <script type="text/javascript">
+        $(function(){
+            //点击给分类加上背景色
+            $(".fly-panel-title").find("a").eq({{.status}}).addClass("layui-this");
+        });
+    </script>
 {{ end }}
