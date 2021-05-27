@@ -122,7 +122,12 @@
                     <div style="text-align: center">
                         <div class="laypage-main">
                             {{/* <a href="{:url('/index/column/all.html?page=2')}" class="laypage-next">更多求解</a>*/}}
-                            <a href="?page=1&pageSize={{$.paging.Pagesize}}" class="not">«</a>
+                            {{if eq $.paging.Page 1}}
+                                <span style="cursor: not-allowed;color:#777;">«</span>
+                            {{else}}
+                                <a href="?page={{.prev}}&pageSize={{$.paging.Pagesize}}" class="not">«</a>
+                            {{ end }}
+
                             {{range $k,$v:=.paging.Nums}}
                                 {{if eq $v $.paging.Page}}
                                     <span class="laypage-curr">{{$.paging.Page}}</span>
@@ -130,7 +135,12 @@
                                 <a href="?page={{$v}}&pageSize={{$.paging.Pagesize}}" class="{{if eq $v $.paging.Page}}active{{end}}">{{$v}}</a>
                                 {{ end }}
                             {{end}}
-                            <a href="?page={{.paging.PageCount}}&pageSize={{$.paging.Pagesize}}">»</a>
+
+                            {{if eq $.paging.Page $.paging.PageCount}}
+                             <span style="cursor: not-allowed;color:#777;">»</span>
+                            {{else}}
+                                <a href="?page={{.next}}&pageSize={{$.paging.Pagesize}}">»</a>
+                            {{end}}
                         </div>
                     </div>
                     {{ end }}

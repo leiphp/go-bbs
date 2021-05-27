@@ -59,13 +59,17 @@ func (this *PostController) List(c *gin.Context){
 	initialize.IrisLog.Infof("[主页控制器-HomeIndex-获取postList数据]-[%s]", libs.StructToJson(postList))
 	total := postList.(map[string]interface{})["total"] //map断言后再从map取值
 	fmt.Println("total is:",total)
+	pages := libs.CreatePaging(params.Page, params.PerPage, int64(total.(int)))
+	fmt.Println("pages is:",pages)
 	c.HTML(http.StatusOK, "post/list.html", gin.H{
 		"title": "综合栏目-雷小天社区",
 		"data": postList,
-		"paging": libs.CreatePaging(params.Page, params.PerPage, int64(total.(int))),
+		"paging": pages,
 		"cli": cli,
 		"category": cate,
 		"status": status,
+		"prev": pages.Page - 1,
+		"next": pages.Page + 1,
 	})
 	//c.JSON(http.StatusOK, libs.ReturnJson(200, "", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"}))
 	//c.HTML(http.StatusOK, "post/list.html", gin.H{"title": "社区讨论-雷小天社区", "address": "bbs.100txy.com"})
