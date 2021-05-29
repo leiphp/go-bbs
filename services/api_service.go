@@ -4,6 +4,7 @@ import (
 	"bbs/datamodels"
 	"bbs/initialize"
 	"bbs/libs"
+	"bbs/mqueue"
 	"bbs/repositories"
 	"errors"
 	"math"
@@ -16,6 +17,7 @@ import (
 	作者名称：leixiaotian 创建时间：20210529
 */
 type ApiInterfaceService interface {
+	PushVisitLog(id int64) (interface{},error) //推送浏览日志MQ
 	GetPost(id int64) (interface{},error) //获取论坛帖子详情
 	GetPostCommentList(query datamodels.ParamsPostCommentList) (interface{}, error)    //获得帖子评论
 	GetPostPageList(query datamodels.PostPageListQuery) (interface{}, error) //获取所有分页帖子
@@ -27,6 +29,7 @@ func NewApiService() ApiInterfaceService {
 		bbsUserService:          repositories.NewBbsUser(),
 		bbsPostService:          repositories.NewBbsPost(),
 		bbsCommentService:       repositories.NewBbsComment(),
+		rabbitMqService: 		 mqueue.NewRabbitService(),
 	}
 }
 
@@ -34,6 +37,19 @@ type apiService struct {
 	bbsUserService 			    repositories.BbsUserInterface           //社区会员服务
 	bbsPostService 			    repositories.BbsPostInterface           //社区帖子服务
 	bbsCommentService 			repositories.BbsCommentInterface        //社区评论服务
+	rabbitMqService 			mqueue.RabbitInterfaceService           //rabbitMQ服务
+}
+
+//推送浏览日志MQ
+func (this *apiService) PushVisitLog(id int64) (interface{}, error) {
+	userInfo, err := this.bbsUserService.SelectInfo(id)
+	initialize.IrisLog.Infof("[api服务-userInfo数据]-[%s]", libs.StructToJson(userInfo))
+	if err != nil {
+		initialize.IrisLog.Errorf("[帖子服务-获取帖子信息失败]-[%s]", err.Error())
+		return 3006, err
+	}
+	this.rabbitMqService.PushVisitLog(userInfo)
+	return true, nil
 }
 
 //获取用户钱包

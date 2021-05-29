@@ -60,6 +60,9 @@ func (this *ApiController) MessageData(c *gin.Context){
 		Type: "buy"}
 	messages := []*message{message1, message2, message3,message4, message5, message6}
 
+	//测试推送MQ消息
+	this.ApiService.PushVisitLog(1)
+
 	//result := make(map[int]string,0)
 	//result[0] = "leixiaotain"
 	//result[1] = "www.100txy.com"
