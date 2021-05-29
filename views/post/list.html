@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="/assets/res/layui/css/layui.css" />
         <link rel="stylesheet" type="text/css" href="/assets/res/css/global.css" />
         <link rel="shortcut icon" href="/assets/images/favicon.ico" />
-        <script src="/assets/js/jquery.2.1.4.min.js"></script>
+        {{template "head.html" .}}
     </head>
     <body>
     {{template "header.html" .}}
@@ -151,7 +151,7 @@
             {{template "right.html" .}}
         </div>
     </div>
-
+    {{template "footer.html" .}}
     </body>
     </html>
 

@@ -12,6 +12,7 @@ import (
 var (
 	homeController 	*controllers.HomeController
 	postController 	*controllers.PostController
+	apiController 	*controllers.ApiController
 )
 
 // SetupRouter 配置路由信息
@@ -42,7 +43,7 @@ func SetupRouter() *gin.Engine {
 
 	v2 := r.Group("/v2")
 	{
-		v2.POST("/login", login)
+		v2.POST("/api/message/data", apiController.MessageData)
 		v2.POST("/submit", submit)
 	}
 
@@ -68,6 +69,8 @@ func initControllerStruct() {
 	homeController = homeObj()
 	//帖子控制器
 	postController = postObj()
+	//api控制器
+	apiController = controllers.NewApiController()
 }
 
 //	首页控制器结构体
