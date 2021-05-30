@@ -30,7 +30,7 @@ func (this *ApiController) MessageData(c *gin.Context){
 
 	message1 := &message{
 		Avatar: "<img loading=\"lazy\" src=\"https://thirdqq.qlogo.cn/g?b=oidb&k=FV064fMPPEKRbPeiaEJMJdw&s=100&t=1556912115\" class=\"avatar avatar-22123 avatar-normal opacity\" width=\"40\" height=\"40\" alt=\"leo_221\"/>",
-		Content: "<a href=\"https://q.jinsom.cn/author/22123\" target=\"_blank\">11加入了<n>LightSNS官网</n></a>",
+		Content: "<a href=\"https://q.jinsom.cn/author/22123\" target=\"_blank\">11加入了<n>雷小天社区</n></a>",
 		NowUserLink: "https://q.jinsom.cn/author/22123",
 		Type: "reg"}
 	message2 := &message{

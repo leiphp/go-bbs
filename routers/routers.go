@@ -12,6 +12,7 @@ import (
 var (
 	homeController 	*controllers.HomeController
 	postController 	*controllers.PostController
+	userController 	*controllers.UserController
 	apiController 	*controllers.ApiController
 )
 
@@ -36,6 +37,7 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/discuss/list",  controllers.DiscussList)
 		v1.GET("/post/list/:cate",  postController.List)
 		v1.GET("/post/:id",  postController.Detail)
+		v1.GET("/user/:id",  userController.Detail)
 		v1.GET("/login", login)
 		v1.GET("submit", submit)
 		v1.GET("/topgoer", helloHandler)
@@ -69,6 +71,8 @@ func initControllerStruct() {
 	homeController = homeObj()
 	//帖子控制器
 	postController = postObj()
+	//用户控制器
+	userController = controllers.NewUserController()
 	//api控制器
 	apiController = controllers.NewApiController()
 }

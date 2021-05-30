@@ -21,7 +21,8 @@ type BbsUser struct {
 	IsAdmin             int     `json:"is_admin"` 	           //是否管理员
 	IsVip               int     `json:"is_vip"` 	           //是否会员
 	Reward              int64   `json:"reward"` 	           //奖励
-	Pass               string  `json:"pass"`                 //密码
+	Pass                string  `json:"pass"`                  //密码
+	CreateDate          string  `gorm:"-" json:"create_date"`  //创建日期
 }
 
 //返回表名
