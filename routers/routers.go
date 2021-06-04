@@ -14,6 +14,7 @@ var (
 	postController 	*controllers.PostController
 	userController 	*controllers.UserController
 	apiController 	*controllers.ApiController
+	goodsController *controllers.GoodsController
 )
 
 // SetupRouter 配置路由信息
@@ -61,6 +62,12 @@ func SetupRouter() *gin.Engine {
 		})
 	}
 
+	//grpc调用
+	v4 := r.Group("/v4")
+	{
+		v4.GET("/goods/:id",  goodsController.Detail)
+	}
+
 	//r.Run(":8000")
 	return r
 }
@@ -75,6 +82,8 @@ func initControllerStruct() {
 	userController = controllers.NewUserController()
 	//api控制器
 	apiController = controllers.NewApiController()
+	//商品控制器 grpc调用
+	goodsController = controllers.NewGoodsController()
 }
 
 //	首页控制器结构体
