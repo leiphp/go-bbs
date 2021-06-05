@@ -37,7 +37,7 @@ func (this *GoodsController) Detail(c *gin.Context){
 	goodsRes, err := this.RpcGoodsService.GetGoodsStock(context.Background(), &services.GoodsRequest{GoodsId: int32(id)})
 	if err != nil {
 		initialize.IrisLog.Errorf("[grpc请求报错：]-[%s]", err)
-		c.JSON(http.StatusInternalServerError,  gin.H{"title": "500"})
+		c.JSON(http.StatusInternalServerError,  libs.ReturnJson(500, "", gin.H{}))
 		return
 	}
 
