@@ -5,6 +5,7 @@ package initialize
 
 import (
 	"bbs/configs"
+	"bbs/helper"
 	"bbs/libs"
 	"fmt"
 	"github.com/allegro/bigcache"
@@ -22,7 +23,6 @@ import (
 	"github.com/sbabiv/rmqconn"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 	"io"
 	"os"
 	"runtime"
@@ -111,9 +111,12 @@ func Init(config *viper.Viper) {
 	BigCache, _ = bigcache.NewBigCache(bigcache.DefaultConfig(1 * time.Minute))
 
 	//grpc链接对象+证书验证
-	creds, err := credentials.NewClientTLSFromFile("keys/server.crt", "leixiaotian")
-	GrpcConn, err = grpc.Dial(":8081", grpc.WithTransportCredentials(creds))
-	//GrpcConn, err = grpc.Dial(":8081", grpc.WithInsecure())
+	//creds, err := credentials.NewClientTLSFromFile("keys/server.crt", "leixiaotian")
+	//GrpcConn, err = grpc.Dial(":8081", grpc.WithTransportCredentials(creds))
+	//GrpcConn, err = grpc.Dial(":8081", grpc.WithInsecure()) todo 无证书用法
+
+	//ca证书双向验证
+	GrpcConn, err = grpc.Dial(":8081", grpc.WithTransportCredentials(helper.GetClientCreds()))
 	if err != nil {
 		panic(err)
 	}
