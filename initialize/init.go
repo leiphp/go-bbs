@@ -22,6 +22,7 @@ import (
 	"github.com/sbabiv/rmqconn"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"io"
 	"os"
 	"runtime"
@@ -109,8 +110,10 @@ func Init(config *viper.Viper) {
 	//系统一级缓存
 	BigCache, _ = bigcache.NewBigCache(bigcache.DefaultConfig(1 * time.Minute))
 
-	//grpc链接对象
-	GrpcConn, err = grpc.Dial(":8081", grpc.WithInsecure())
+	//grpc链接对象+证书验证
+	creds, err := credentials.NewClientTLSFromFile("keys/server.crt", "leixiaotian")
+	GrpcConn, err = grpc.Dial(":8081", grpc.WithTransportCredentials(creds))
+	//GrpcConn, err = grpc.Dial(":8081", grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}
