@@ -1,0 +1,166 @@
+{{ define "home/reg.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="fly,layui,前端社区">
+    <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+    <link rel="stylesheet" href="__RES__/layui/css/layui.css">
+    <link rel="stylesheet" href="__RES__/css/global.css">
+    <script src="__HOME__/js/jquery.2.1.4.min.js"></script>
+</head>
+<body>
+
+{include file="common@header" /}
+<div class="layui-container fly-marginTop">
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title">
+                <li><a href="login.html">登入</a></li>
+                <li class="layui-this">注册</li>
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane">
+                        <form action="{:url('index/reg')}" method="post">
+                            <div class="layui-form-item">
+                                <label for="L_email" class="layui-form-label">邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="user_mail" name="email" required lay-verify="required|email" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label for="L_vercode" class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_vercode" name="vercode" required="" lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid" style="padding: 0!important;">
+                                    <button type="button" class="layui-btn layui-btn-normal get_mail_code_btn" onclick="update_mail_get_code(60);" id="mail_getvercode">获取验证码</button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_username" class="layui-form-label">昵称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_username" name="username" required lay-verify="required|username" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_pass" class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="L_pass" name="pass" required lay-verify="pass" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">6到12个字符</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_repass" class="layui-form-label">确认密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="L_vercode" class="layui-form-label">图形验证</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="L_verify" name="verify" required lay-verify="required" placeholder="请输入图形验证码" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid">
+                                    <img id="verify_img" src="{:captcha_src()}" alt="验证码" onclick="refreshVerify()" style="height: 38px;margin-top: -6px;">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn" lay-filter="*" lay-submit>立即注册</button>
+                            </div>
+                            <div class="layui-form-item fly-form-app">
+                                <span>或者直接使用社交账号快捷注册</span>
+                                <a href="{:url('api/index/qqlogin')}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
+                                <a href="{:url('api/index/sinalogin')}" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo" title="微博登入"></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{include file="common@footer"/}
+<script src="__RES__/layui/layui.js"></script>
+<script>
+    layui.cache.page = 'user';
+    layui.cache.user = {
+        username: '游客'
+        ,uid: -1
+        ,avatar: '__RES__/images/avatar/00.jpg'
+        ,experience: 83
+        ,sex: '男'
+    };
+    layui.config({
+        version: "3.0.0"
+        ,base: '__RES__/mods/'
+    }).extend({
+        fly: 'index'
+    }).use('fly');
+
+    //修改邮箱  获取邮箱验证码
+    function update_mail_get_code(t){
+        var mail=$('#user_mail').val();
+        if(mail==""){
+            layer.msg('邮箱不能为空喔', {icon: 2});
+            return false;
+        }else{
+            var reg=/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+            if(!reg.test(mail) ){
+                layer.msg('邮箱格式错误喔', {icon: 2});
+                return false;
+            }
+        }
+        // layer.load(1);
+        $.ajax({
+            type: "POST",
+            url:"http://bbs.100txy.com/user/index/ajax_getcode",
+            data: {update_mail:mail},
+            success: function(msg){
+                layer.closeAll('loading');
+                if(msg==3){
+                    layer.msg('该邮箱已经被注册！',{icon: 2});
+                }else if(msg==2){
+                    layer.msg('一分钟只能获取一次！',{icon: 2});
+                }else if(msg==1){
+                    layer.msg('验证码已发送到邮箱！',{icon: 1});
+                    $('.get_mail_code_btn').attr("disabled",true);
+                    for(i=1;i<=t;i++) {
+                        window.setTimeout("jinsom_mail_update_time(" + i + ","+t+")", i * 1000);
+                    }
+                }else{
+                    layer.msg('无法获取验证码，请联系管理员！');
+                }
+            }
+        });
+    }
+
+    function jinsom_mail_update_time(num,t) {
+        if(num == t) {
+            $("#mail_getvercode").text('获取验证码');
+            $('.get_mail_code_btn').attr("disabled",false);
+            $('.get_mail_code_btn').removeClass('layui-btn-disabled');
+        }else {
+            printnr = t-num;
+            $('#mail_getvercode').text(printnr +'秒后重获');
+            // alert($('#mail_getvercode').val());
+            $('.get_mail_code_btn').addClass('layui-btn-disabled');
+        }
+    }
+    //获取验证码
+    function refreshVerify() {
+        var ts = Date.parse(new Date())/1000;
+        var img = document.getElementById('verify_img');
+        img.src = "/captcha?id="+ts;
+    }
+</script>
+</body>
+</html>
+{{ end }}
