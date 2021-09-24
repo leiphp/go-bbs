@@ -105,6 +105,10 @@ func (this *HomeController) Index(c *gin.Context){
 	})
 }
 
+func (this *HomeController) Reg(c *gin.Context){
+	c.HTML(http.StatusOK, "home/reg.html", gin.H{"title": "首页-雷小天社区", "address": "www.100txy.com"})
+}
+
 func (this *HomeController) List(c *gin.Context){
 	c.HTML(http.StatusOK, "home/list.html", gin.H{"title": "首页-雷小天社区", "address": "www.100txy.com"})
 }
