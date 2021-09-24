@@ -5,6 +5,7 @@ package initialize
 
 import (
 	"bbs/configs"
+	"bbs/helper"
 	"bbs/libs"
 	"fmt"
 	"github.com/allegro/bigcache"
@@ -21,6 +22,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"github.com/sbabiv/rmqconn"
 	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 	"io"
 	"os"
 	"runtime"
@@ -41,6 +43,7 @@ var (
 	NowTime         *now.Now
 	NacosClient     naming_client.INamingClient //nacos服务客户端
 	BigCache        *bigcache.BigCache          //内存缓存 用于一级缓存
+	GrpcConn        *grpc.ClientConn          //grpc对象 用于grpc调用
 )
 
 //	提供系统初始化，全局变量
@@ -106,6 +109,18 @@ func Init(config *viper.Viper) {
 
 	//系统一级缓存
 	BigCache, _ = bigcache.NewBigCache(bigcache.DefaultConfig(1 * time.Minute))
+
+	//grpc链接对象+证书验证
+	//creds, err := credentials.NewClientTLSFromFile("keys/server.crt", "leixiaotian")
+	//GrpcConn, err = grpc.Dial(":8081", grpc.WithTransportCredentials(creds))
+	//GrpcConn, err = grpc.Dial(":8081", grpc.WithInsecure()) todo 无证书用法
+
+	//ca证书双向验证
+	GrpcConn, err = grpc.Dial(":8081", grpc.WithTransportCredentials(helper.GetClientCreds()))
+	if err != nil {
+		panic(err)
+	}
+	//defer GrpcConn.Close() //放到实际调用方法中
 
 }
 

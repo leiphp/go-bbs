@@ -4,6 +4,7 @@ import (
 	"bbs/datamodels"
 	"bbs/initialize"
 	"bbs/libs"
+	"bbs/mqueue"
 	"bbs/repositories"
 	"errors"
 	"math"
@@ -11,56 +12,48 @@ import (
 )
 
 /*
-	提供关于讨论帖子服务
+	提供关于API服务
 
-	作者名称：leixiaotian 创建时间：20210512
+	作者名称：leixiaotian 创建时间：20210529
 */
-type PostInterfaceService interface {
+type ApiInterfaceService interface {
+	PushVisitLog(id int64) (interface{},error) //推送浏览日志MQ
 	GetPost(id int64) (interface{},error) //获取论坛帖子详情
 	GetPostCommentList(query datamodels.ParamsPostCommentList) (interface{}, error)    //获得帖子评论
 	GetPostPageList(query datamodels.PostPageListQuery) (interface{}, error) //获取所有分页帖子
 }
 
 //初始化对象函数
-func NewPostService() PostInterfaceService {
-	return &postService{
+func NewApiService() ApiInterfaceService {
+	return &apiService{
 		bbsUserService:          repositories.NewBbsUser(),
 		bbsPostService:          repositories.NewBbsPost(),
 		bbsCommentService:       repositories.NewBbsComment(),
+		rabbitMqService: 		 mqueue.NewRabbitService(),
 	}
 }
 
-type postService struct {
+type apiService struct {
 	bbsUserService 			    repositories.BbsUserInterface           //社区会员服务
 	bbsPostService 			    repositories.BbsPostInterface           //社区帖子服务
 	bbsCommentService 			repositories.BbsCommentInterface        //社区评论服务
+	rabbitMqService 			mqueue.RabbitInterfaceService           //rabbitMQ服务
+}
+
+//推送浏览日志MQ
+func (this *apiService) PushVisitLog(id int64) (interface{}, error) {
+	userInfo, err := this.bbsUserService.SelectInfo(id)
+	initialize.IrisLog.Infof("[api服务-userInfo数据]-[%s]", libs.StructToJson(userInfo))
+	if err != nil {
+		initialize.IrisLog.Errorf("[帖子服务-获取帖子信息失败]-[%s]", err.Error())
+		return 3006, err
+	}
+	this.rabbitMqService.PushVisitLog(userInfo)
+	return true, nil
 }
 
 //获取用户钱包
-func (this *postService) GetPost(id int64) (interface{},error){
-
-	//type BbsPostInfoVo struct {
-	//	ID                int64   `json:"id"` 					 //ID
-	//	Title          	  string  `json:"title"`            	 //标题
-	//	Author            int     `json:"author"`                //作者ID
-	//	Content           string  `json:"content"`               //内容
-	//	Reward            int     `json:"reward"`                //奖励
-	//	IsWonderful       int     `json:"is_wonderful"`          //是否精帖
-	//	IsTop   	      int     `json:"is_top"`                //是否置顶
-	//	Solved            int     `json:"solved"`                //是否解决
-	//	ViewCount         int     `json:"view_count"`            //浏览量
-	//	CommentCount      int     `json:"comment_count"`         //评论量
-	//	CreateTime        int     `json:"create_time"`        //创建时间
-	//	CreateDate        string  `json:"create_date"`        //创建日期
-	//	CategoryId        int     `json:"category_id"`           //分类ID
-	//	CategoryName      string  `json:"category_name"`         //分类名称
-	//	UserInfo		  struct{
-	//		AuthorName        string  `json:"author_name"`           //作者昵称
-	//		HeadImg           string  `json:"head_img"`              //作者头像
-	//		IsVip     		  int     `json:"is_vip"`                //是否VIP
-	//		IsAdmin     	  int     `json:"is_admin"`              //是否管理员
-	//	} `json:"user_info,omitempty"` //用户详情
-	//}
+func (this *apiService) GetPost(id int64) (interface{},error){
 	var bbsPostInfoVo datamodels.BbsPostInfoVo
 
 	postInfo, err := this.bbsPostService.SelectInfo(id)
@@ -89,7 +82,7 @@ func (this *postService) GetPost(id int64) (interface{},error){
 }
 
 // 获得帖子评论
-func (this *postService) GetPostCommentList(query datamodels.ParamsPostCommentList) (interface{}, error) {
+func (this *apiService) GetPostCommentList(query datamodels.ParamsPostCommentList) (interface{}, error) {
 
 	//如果没有分页，默认是第一页和显示20条
 	if query.Page == 0 {
@@ -130,7 +123,7 @@ func (this *postService) GetPostCommentList(query datamodels.ParamsPostCommentLi
 }
 
 // 获取所有分页帖子
-func (this *postService) GetPostPageList(query datamodels.PostPageListQuery) (interface{}, error) {
+func (this *apiService) GetPostPageList(query datamodels.PostPageListQuery) (interface{}, error) {
 
 	//如果没有分页，默认是第一页和显示20条
 	if query.Page == 0 {

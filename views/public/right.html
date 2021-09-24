@@ -72,7 +72,7 @@
       <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
       {{range $index, $v := .reply }}
       <dd>
-        <a href="{:url('user/index/home',array('id'=>$v.id))}">
+        <a href="/user/{{$v.Id}}">
           <img src="{{$v.HeadImg}}"><cite>{{$v.Nickname}}</cite><i>{{$v.ReplyNum}}次回答</i>
         </a>
       </dd>

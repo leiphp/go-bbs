@@ -5,6 +5,7 @@ go-bbs是一个基于golang gin框架开发的个人社区论坛项目，封装�
 Dockerfile2是使用docker-compose.yml构建的文件  
 Dockerfile是Jenkins内部构建的文件  
 k8s目录配置k8s运行的文件清单  
+项目中请求8081端口grpc服务是 https://github.com/leiphp/grpc-gateway  
 
 ## 普遍部署
 构建镜像

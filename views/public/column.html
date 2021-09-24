@@ -17,12 +17,12 @@
    <ul class="layui-clear" id="layui-head">
      <!-- <li class="layui-hide-xs layui-this"><a href="/">首页</a></li> -->
      <li><a href="/">首页</a></li>
-     <li><a href="{:url('index/quiz/index')}">提问</a></li>
-     <li><a href="{:url('index/share/index')}">分享<span class="layui-badge-dot"></span></a></li>
-     <li><a href="{:url('index/discuss/index')}">讨论</a></li>
-     <li><a href="{:url('index/suggest/index')}">建议</a></li>
-     <li><a href="{:url('index/notice/index')}">公告</a></li>
-     <li><a href="{:url('index/news/index')}">动态</a></li>
+     <li><a href="/post/list/quiz?page=1">提问</a></li>
+     <li><a href="/post/list/share?page=1">分享<span class="layui-badge-dot"></span></a></li>
+     <li><a href="/post/list/discuss?page=1">讨论</a></li>
+     <li><a href="/post/list/suggest?page=1">建议</a></li>
+     <li><a href="/post/list/notice?page=1">公告</a></li>
+     <li><a href="/post/list/news?page=1">动态</a></li>
      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
 
      <!-- 用户登入后显示 -->
@@ -41,3 +41,10 @@
    </div>
  </div>
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    //点击给分类加上背景色
+    $("#layui-head").find("li").eq({{.cli}}).addClass("layui-this");
+  });
+</script>

@@ -18,6 +18,7 @@ type BbsPostInterface interface {
 	SelectInfo(id int64) (datamodels.BbsPost, error) //获得帖子信息
 	SelectTopList() ([]datamodels.BbsPost, error) //获得置顶帖子信息
 	SelectPage(params map[string]interface{}, page int64, perPage int64) ([]datamodels.BbsPost, int, error) //获取分页帖子列表
+	SelectByQuery(params map[string]interface{}, page int64, perPage int64, limit int64) ([]datamodels.BbsPost, int, error) //按条件获取帖子列表
 }
 
 //返回结构体对象
@@ -125,6 +126,41 @@ func (this *bbsPost) SelectPage(params map[string]interface{}, page int64, perPa
 	}
 
 	err := db.Order("id DESC").Find(&records).Error
+	if err != nil {
+		initialize.IrisLog.Errorf("[帖子仓库-获得帖子分页录列表-失败]-[%s]", err)
+		return records, 0, err
+	}
+	return records, total, nil
+
+}
+
+//按条件获取帖子列表
+func (this *bbsPost) SelectByQuery(params map[string]interface{}, page int64, perPage int64, limit int64) ([]datamodels.BbsPost, int, error) {
+
+	var (
+		info    datamodels.BbsPost
+		records []datamodels.BbsPost
+		total   = 0
+	)
+
+	db := initialize.MsqlDb.Model(&info).Select("cy_post.*, `cy_oauth_user`.nickname").Joins("left join cy_oauth_user ON cy_oauth_user.id = cy_post.author ")
+
+	if params != nil {
+		db = db.Where(params)
+	}
+
+	//总数
+	db.Order("id DESC").Count(&total)
+
+	if page > 0 && perPage > 0 {
+		db = db.Limit(perPage).Offset((page - 1) * perPage)
+	}
+
+	if limit > 0 {
+		db = db.Limit(limit)
+	}
+
+	err := db.Debug().Order("id DESC").Find(&records).Error
 	if err != nil {
 		initialize.IrisLog.Errorf("[帖子仓库-获得帖子分页录列表-失败]-[%s]", err)
 		return records, 0, err

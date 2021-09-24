@@ -82,3 +82,14 @@ type PostPageListQuery struct {
 	Solved          *int   `json:"solved"`        //是否解决
 	IsWonderful    	*int   `json:"is_wonderful"`  //是否精贴
 }
+
+//按条件查询帖子参数
+type PostByQuery struct {
+	CategoryId    	*int   `json:"category_id"`   //分类id
+	UserId      	*int64 `json:"user_id"`       //用户ID
+	Page      	    int64  `json:"page"`          //分页
+	PerPage   	    int64  `json:"per_page"`      //每页显示多少条
+	Limit   	    int64  `json:"limit"`         //限制多少条
+	Solved          *int   `json:"solved"`        //是否解决
+	IsWonderful    	*int   `json:"is_wonderful"`  //是否精贴
+}

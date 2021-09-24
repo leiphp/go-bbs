@@ -1,13 +1,164 @@
 {{ define "post/list.html" }}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>讨论-雷小天社区</title>
-</head>
-<body>
-<h3>{{.title}}</h3>
-帖子列表页面-欢迎光临-{{.address}}
-</body>
-</html>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>综合栏目-雷小天社区</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="keywords" content="开发者社区,站长社区,技术论坛,互联网综合社区">
+        <meta name="description" content="雷小天社区是面向开发者的开放型综合互联网技术平台，涉及到后台开发、移动开发、前端开发、站长技术等相关领域，关注互联网相关技术的问答、分享、讨论、建议、动态及公告等，与提问回答交流方式，共同提高自身的开发技术水平，达到通过进步的目的。">
+
+        <link rel="stylesheet" type="text/css" href="/assets/res/layui/css/layui.css" />
+        <link rel="stylesheet" type="text/css" href="/assets/res/css/global.css" />
+        <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+        {{template "head.html" .}}
+    </head>
+    <body>
+    {{template "header.html" .}}
+
+    {{template "column.html" .}}
+
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <!-- 左边主体部分 -->
+            <div class="layui-col-md8">
+                {{if .topdata}}
+                    <div class="fly-panel">
+                        <div class="fly-panel-title fly-filter">
+                            <a>置顶</a>
+                            <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a>
+                        </div>
+                        <ul class="fly-list">
+                            {{range $index, $v := .topdata }}
+                                <li>
+                                    <a href="{:url('user/index/home',array('id'=>$v.author))}" class="fly-avatar">
+                                        <img src="{{ $v.UserInfo.HeadImg }}" alt="{{$v.UserInfo.AuthorName}}">
+                                    </a>
+                                    <h2>
+                                        <a class="layui-badge">{{$v.CategoryName}}</a>
+                                        <a href="/post/{{$v.ID}}">{{$v.Title}}</a>
+                                    </h2>
+                                    <div class="fly-list-info">
+                                        <a href="{:url('user/index/home',array('id'=>$v.author))}" link>
+                                            <cite>{{$v.UserInfo.AuthorName}}</cite>
+                                            {{if $v.UserInfo.IsAdmin}}
+                                                <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
+                                            {{end}}
+                                            {{if $v.UserInfo.IsVip}}
+                                                <i class="layui-badge fly-badge-vip">VIP{{$v.UserInfo.IsVip}}</i>
+                                            {{end}}
+                                        </a>
+                                        <span>{{$v.CreateDate}}</span>
+
+                                        <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{$v.Reward}}</span>
+                                        {{if eq $v.Solved 1}}
+                                            <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+                                        {{end}}
+                                        <span class="fly-list-nums"><i class="iconfont icon-pinglun1" title="回答"></i> {{$v.CommentCount}}</span>
+                                    </div>
+                                    <div class="fly-list-badge">
+                                        <!--
+                                           <span class="layui-badge layui-bg-black">置顶</span>
+                                           <span class="layui-badge layui-bg-red">精帖</span>
+                                           -->
+                                    </div>
+                                </li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                {{end}}
+
+                <div class="fly-panel" style="margin-bottom: 0;">
+
+                    <div class="fly-panel-title fly-filter">
+                        <a href="/post/list/{{.category}}?page=1">综合</a>
+                        <span class="fly-mid"></span>
+                        <a href="/post/list/{{.category}}?page=1&status=1">未结</a>
+                        <span class="fly-mid"></span>
+                        <a href="/post/list/{{.category}}?page=1&status=2">已结</a>
+                        <span class="fly-mid"></span>
+                        <a href="/post/list/{{.category}}?page=1&status=3">精华</a>
+                        <span class="fly-filter-right layui-hide-xs"><a href="" class="layui-this">按最新</a><span class="fly-mid"></span><a href="">按热议</a></span>
+                    </div>
+
+                    <ul class="fly-list">
+                        {{range $index, $v := .data.rows }}
+                            <li>
+                                <a href="{:url('user/index/home',array('id'=>$v.author))}" class="fly-avatar">
+                                    <img src="{{ $v.UserInfo.HeadImg }}" alt="{{$v.UserInfo.AuthorName}}">
+                                </a>
+                                <h2>
+                                    <a class="layui-badge">{{$v.CategoryName}}</a>
+                                    <a href="/post/{{$v.ID}}">{{$v.Title}}</a>
+                                </h2>
+                                <div class="fly-list-info">
+                                    <a href="{:url('user/index/home',array('id'=>$v.author))}" link>
+                                        <cite>{{$v.UserInfo.AuthorName}}</cite>
+                                        {{if $v.UserInfo.IsAdmin}}
+                                            <i class="iconfont icon-renzheng" title="认证信息：管理员"></i>
+                                        {{end}}
+                                        {{if $v.UserInfo.IsVip}}
+                                            <i class="layui-badge fly-badge-vip">VIP{{$v.UserInfo.IsVip}}</i>
+                                        {{end}}
+                                    </a>
+                                    <span>{{$v.CreateDate}}</span>
+
+                                    <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> {{$v.Reward}}</span>
+                                    {{if eq $v.Solved 1}}
+                                        <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
+                                    {{ end }}
+                                    <span class="fly-list-nums"><i class="iconfont icon-pinglun1" title="回答"></i> {{$v.CommentCount}}</span>
+                                </div>
+                                <div class="fly-list-badge">
+                                    {{if eq $v.IsWonderful 1}}
+                                        <span class="layui-badge layui-bg-red">精帖</span>
+                                    {{ end }}
+                                </div>
+                            </li>
+                        {{ end }}
+                    </ul>
+
+                    {{if .data.count}}
+                    <div style="text-align: center">
+                        <div class="laypage-main">
+                            {{/* <a href="{:url('/index/column/all.html?page=2')}" class="laypage-next">更多求解</a>*/}}
+                            {{if eq $.paging.Page 1}}
+                                <span style="cursor: not-allowed;color:#777;">«</span>
+                            {{else}}
+                                <a href="?page={{.prev}}&pageSize={{$.paging.Pagesize}}" class="not">«</a>
+                            {{ end }}
+
+                            {{range $k,$v:=.paging.Nums}}
+                                {{if eq $v $.paging.Page}}
+                                    <span class="laypage-curr">{{$.paging.Page}}</span>
+                                {{else}}
+                                <a href="?page={{$v}}&pageSize={{$.paging.Pagesize}}" class="{{if eq $v $.paging.Page}}active{{end}}">{{$v}}</a>
+                                {{ end }}
+                            {{end}}
+
+                            {{if eq $.paging.Page $.paging.PageCount}}
+                             <span style="cursor: not-allowed;color:#777;">»</span>
+                            {{else}}
+                                <a href="?page={{.next}}&pageSize={{$.paging.Pagesize}}">»</a>
+                            {{end}}
+                        </div>
+                    </div>
+                    {{ end }}
+
+                </div>
+            </div>
+            <!-- 左边主体部分 -->
+            {{template "right.html" .}}
+        </div>
+    </div>
+    {{template "footer.html" .}}
+    </body>
+    </html>
+
+    <script type="text/javascript">
+        $(function(){
+            //点击给分类加上背景色
+            $(".fly-panel-title").find("a").eq({{.status}}).addClass("layui-this");
+        });
+    </script>
 {{ end }}

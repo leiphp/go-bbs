@@ -21,6 +21,7 @@ RabbitMQ:
   UserName: gobbs
   PassWord: 123456
   Port: 5672
+  visitLogQueue: "visit_log_queue"
   SendGiftQueue: "shop_orders_queue_dev"
   UserExpQueue: "user_exp_queue"
   LiveSendQueue: "account-payed-send"

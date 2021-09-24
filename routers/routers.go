@@ -12,6 +12,9 @@ import (
 var (
 	homeController 	*controllers.HomeController
 	postController 	*controllers.PostController
+	userController 	*controllers.UserController
+	apiController 	*controllers.ApiController
+	goodsController *controllers.GoodsController
 )
 
 // SetupRouter 配置路由信息
@@ -33,8 +36,9 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/home/list",  homeController.List)
 		v1.GET("/discuss",  controllers.DiscussIndex)
 		v1.GET("/discuss/list",  controllers.DiscussList)
-		v1.GET("/post",  postController.List)
+		v1.GET("/post/list/:cate",  postController.List)
 		v1.GET("/post/:id",  postController.Detail)
+		v1.GET("/user/:id",  userController.Detail)
 		v1.GET("/login", login)
 		v1.GET("submit", submit)
 		v1.GET("/topgoer", helloHandler)
@@ -42,7 +46,7 @@ func SetupRouter() *gin.Engine {
 
 	v2 := r.Group("/v2")
 	{
-		v2.POST("/login", login)
+		v2.POST("/api/message/data", apiController.MessageData)
 		v2.POST("/submit", submit)
 	}
 
@@ -58,6 +62,12 @@ func SetupRouter() *gin.Engine {
 		})
 	}
 
+	//grpc调用
+	v4 := r.Group("/v4")
+	{
+		v4.GET("/goods/:id",  goodsController.Detail)
+	}
+
 	//r.Run(":8000")
 	return r
 }
@@ -68,6 +78,12 @@ func initControllerStruct() {
 	homeController = homeObj()
 	//帖子控制器
 	postController = postObj()
+	//用户控制器
+	userController = controllers.NewUserController()
+	//api控制器
+	apiController = controllers.NewApiController()
+	//商品控制器 grpc调用
+	goodsController = controllers.NewGoodsController()
 }
 
 //	首页控制器结构体
