@@ -60,7 +60,7 @@ func (this *bbsPost) SelectTopList() ([]datamodels.BbsPost, error) {
 	//redis礼物key
 	giftKey := ReturnRedisKey(API_CACHE_POST_TOP_LIST, nil)
 	initialize.IrisLog.Infof("[帖子仓库-获取redis置顶key]-[%s]", giftKey)
-	list, err := initialize.RedisCluster.ZRevRange(giftKey, 0, 100).Result()
+	list, err := initialize.RedisClient.ZRevRange(giftKey, 0, 100).Result()
 	initialize.IrisLog.Infof("[帖子仓库-获取redis置顶list]-[%s]", list)
 	if err != nil {
 		initialize.IrisLog.Errorf("[帖子仓库-获取redis帖子置顶列表失败]-[%s]", err.Error())

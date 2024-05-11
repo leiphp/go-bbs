@@ -34,16 +34,16 @@ import (
 var (
 	MsqlDb       *gorm.DB             //数据库客户端
 	RedisCluster *redis.ClusterClient //redis客户端
-	//IMRedisCluster *redis.ClusterClient //redis客户端
-	MqClient        rmqconn.Connecter //全局Mq客户端-商城vs直播
-	MqClientUCenter rmqconn.Connecter //全局Mq客户端-商城vs用户中心
+	RedisClient     *redis.Client     //redis单机客户端
+	MqClient        rmqconn.Connecter //全局Mq客户端
+	MqClientUCenter rmqconn.Connecter //全局Mq客户端集群
 	IrisLog         *golog.Logger     //全局log变量
 	App             *iris.Application //全局App变量
 	Config          *viper.Viper      //全局配置
 	NowTime         *now.Now
 	NacosClient     naming_client.INamingClient //nacos服务客户端
 	BigCache        *bigcache.BigCache          //内存缓存 用于一级缓存
-	GrpcConn        *grpc.ClientConn          //grpc对象 用于grpc调用
+	GrpcConn        *grpc.ClientConn            //grpc对象 用于grpc调用
 )
 
 //	提供系统初始化，全局变量
@@ -64,24 +64,35 @@ func Init(config *viper.Viper) {
 	}
 
 	//	Redis客户端
-	RedisCluster = redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: config.GetStringSlice("RedisCluster"),
+	//RedisCluster = redis.NewClusterClient(&redis.ClusterOptions{
+	//	Addrs: config.GetStringSlice("RedisCluster"),
+	//})
+	//err = RedisCluster.Ping().Err()
+	//if err != nil {
+	//	panic(err)
+	//}
+
+	//	Redis客户端
+	RedisClient = redis.NewClient(&redis.Options{
+		Addr:     config.GetString("Redis.default.addr"),
+		Password: config.GetString("Redis.default.password"), // no password set
+		DB:       config.GetInt("Redis.default.db"),          // use default DB
 	})
-	err = RedisCluster.Ping().Err()
+	err = RedisClient.Ping().Err()
 	if err != nil {
 		panic(err)
 	}
 
 	//	RMQ客户端
-	MqClient, err = rmqconn.Open("amqp://"+config.GetString("RabbitMQ.UserName")+":"+config.GetString("RabbitMQ.PassWord")+"@"+config.GetString("RabbitMQ.Host")+":"+config.GetString("RabbitMQ.Port"), rmqconn.Dial)
-	if err != nil {
-		panic(err)
-	}
+	//MqClient, err = rmqconn.Open("amqp://"+config.GetString("RabbitMQ.UserName")+":"+config.GetString("RabbitMQ.PassWord")+"@"+config.GetString("RabbitMQ.Host")+":"+config.GetString("RabbitMQ.Port"), rmqconn.Dial)
+	//if err != nil {
+	//	panic(err)
+	//}
 
-	MqClientUCenter, err = rmqconn.Open("amqp://"+config.GetString("RabbitMQUCenter.UserName")+":"+config.GetString("RabbitMQUCenter.PassWord")+"@"+config.GetString("RabbitMQUCenter.Host")+":"+config.GetString("RabbitMQUCenter.Port"), rmqconn.Dial)
-	if err != nil {
-		panic(err)
-	}
+	//MqClientUCenter, err = rmqconn.Open("amqp://"+config.GetString("RabbitMQUCenter.UserName")+":"+config.GetString("RabbitMQUCenter.PassWord")+"@"+config.GetString("RabbitMQUCenter.Host")+":"+config.GetString("RabbitMQUCenter.Port"), rmqconn.Dial)
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	//	系统日志配置
 	App = iris.New()
@@ -103,7 +114,6 @@ func Init(config *viper.Viper) {
 		}
 		return false
 	})
-
 
 	now.WeekStartDay = time.Monday
 
