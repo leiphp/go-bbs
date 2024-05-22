@@ -79,7 +79,7 @@ func (this *bbsPost) SelectTopList() ([]datamodels.BbsPost, error) {
 			top.Id = val.ID
 			top.CreateTime = val.CreateTime
 			postTops = append(postTops, top) //TODO 可省略
-			initialize.RedisCluster.ZAdd(ReturnRedisKey(API_CACHE_POST_TOP_LIST, nil), &redis.Z{Score: float64(val.CreateTime), Member: val.ID})
+			initialize.RedisClient.ZAdd(ReturnRedisKey(API_CACHE_POST_TOP_LIST, nil), &redis.Z{Score: float64(val.CreateTime), Member: val.ID})
 		}
 
 		//initialize.IrisLog.Infof("[帖子仓库-postTops]-[%s]", postTops)
